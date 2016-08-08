@@ -1,15 +1,17 @@
 {
     "name": "picr/diaclone",
     "description": "Transform your data",
-    "keywords": ["transformation"],
+    "keywords": [
+        "transformation"
+    ],
     "license": "MIT",
     "require": {
-        "php": ">=7.0.0"
+        "php": ">=7.0.0",
+        "spatie/laravel-fractal": "^1.9"
     },
     "autoload": {
         "psr-0": {
-            "Picr\\Diaclone": "src/",
-            "spatie/laravel-fractal": "^1.9"
+            "Picr\\Diaclone": "src/"
         }
     },
     "extra": {
