@@ -1,0 +1,23 @@
+{
+    "name": "picr/diaclone",
+    "description": "Transform your data",
+    "keywords": [
+        "transformation"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=7.0.0",
+        "codeception/codeception": "^2.2"
+    },
+    "autoload": {
+        "psr-0": {
+            "Diaclone": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "minimum-stability": "dev"
+}
