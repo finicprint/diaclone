@@ -69,6 +69,91 @@ class TransformCest
         ];
         $I->assertEquals($expected, $output);
     }
+
+    public function testUntransform(UnitTester $I)
+    {
+        $payload = [
+            'person' => [
+                'name'       => 'My name is Bill',
+                'age'        => 42,
+                'occupation' => [
+                    'name' => 'Piano Man',
+                ],
+                'friends'    => [
+                    [
+                        'name'       => 'My name is Paul',
+                        'age'        => 42,
+                        'occupation' => [
+                            'name' => 'Real estate novelist',
+                        ],
+                    ],
+                    [
+                        'name'       => 'My name is John',
+                        'age'        => 42,
+                        'occupation' => [
+                            'name' => 'Bartender',
+                        ],
+                    ],
+                    [
+                        'name'       => 'My name is Davy',
+                        'age'        => 42,
+                        'occupation' => [
+                            'name' => 'Sailor',
+                        ],
+                    ],
+                    [
+                        'name'       => 'My name is Unknown',
+                        'age'        => 42,
+                        'occupation' => [
+                            'name' => 'Waitress',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $output = (new TransformService())->untransform($payload, new PersonTransformer());
+
+        $expected = [
+            'person' => [
+                'name'       => 'My name is Bill',
+                'age'        => 42,
+                'my_job' => [
+                    'name' => 'Piano Man',
+                ],
+                'my_friends'    => [
+                    [
+                        'name'       => 'My name is Paul',
+                        'age'        => 42,
+                        'my_job' => [
+                            'name' => 'Real estate novelist',
+                        ],
+                    ],
+                    [
+                        'name'       => 'My name is John',
+                        'age'        => 42,
+                        'my_job' => [
+                            'name' => 'Bartender',
+                        ],
+                    ],
+                    [
+                        'name'       => 'My name is Davy',
+                        'age'        => 42,
+                        'my_job' => [
+                            'name' => 'Sailor',
+                        ],
+                    ],
+                    [
+                        'name'       => 'My name is Unknown',
+                        'age'        => 42,
+                        'my_job' => [
+                            'name' => 'Waitress',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $I->assertEquals($expected, $output);
+    }
 }
 
 class Person

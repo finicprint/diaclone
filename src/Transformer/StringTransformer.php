@@ -11,4 +11,9 @@ class StringTransformer extends AbstractTransformer
     {
         return (string)$this->getPropertyValue($resource->getData(), $resource->getPropertyName());
     }
+
+    public function untransform(ResourceInterface $resource)
+    {
+        return $resource->getData();
+    }
 }

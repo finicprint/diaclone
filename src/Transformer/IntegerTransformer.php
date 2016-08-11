@@ -11,4 +11,9 @@ class IntegerTransformer extends AbstractTransformer
     {
         return (int)$this->getPropertyValue($resource->getData(), $resource->getPropertyName());
     }
+
+    public function untransform(ResourceInterface $resource)
+    {
+        return $resource->getData();
+    }
 }

@@ -38,4 +38,24 @@ class Item extends AbstractResource
 
         return $response;
     }
+
+    public function untransform(AbstractTransformer $transformer)
+    {
+        $mapping = array_flip($transformer->getMappedProperties());
+
+        $response = [];
+        foreach ($this->getData() as $incomingProperty => $data) {
+            $property = $mapping[$incomingProperty];
+
+            $dataTypeClass = $transformer->getDataType($property);
+            $dataType = new $dataTypeClass($data, $property);
+
+            $propertyTransformerClass = $transformer->getPropertyTransformer($property);
+            $propertyTransformer = new $propertyTransformerClass();
+
+            $response[$property] = $propertyTransformer->untransform($dataType);
+        }
+
+        return $response;
+    }
 }
