@@ -10,8 +10,8 @@
         "codeception/codeception": "^2.2"
     },
     "autoload": {
-        "psr-0": {
-            "Diaclone": "src/"
+        "psr-4": {
+            "Diaclone\\": "src/"
         }
     },
     "extra": {

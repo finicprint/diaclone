@@ -1,26 +1,24 @@
 <?php
 declare(strict_types = 1);
 
-namespace Test\Functional\Transform;
-
+use Diaclone\Resource\ResourceInterface;
+use Diaclone\Resource\Collection;
 use Diaclone\Transformer\AbstractTransformer;
 use Diaclone\Transformer\IntegerTransformer;
 use Diaclone\Transformer\StringTransformer;
-use Illuminate\Support\Collection;
-use Transform;
-use UnitTester;
+use Diaclone\TransformService;
 
 class TransformCest
 {
     public function testTransformationAll(UnitTester $I)
     {
-        $friends = new Collection([
+        $friends = [
             new Person('Paul', 'Real estate novelist'),
             new Person('John', 'Bartender'),
             new Person('Davy', 'Sailor'),
             new Person('Unknown', 'Waitress'),
-        ]);
-        $output = Transform::transform(new Person('Bill', 'Piano Man', $friends), new PersonTransformer(), 'person');
+        ];
+        $output = (new TransformService())->transform(new Person('Bill', 'Piano Man', $friends), new PersonTransformer(), 'person');
         $expected = [
             'person' => [
                 'name'       => 'My name is Bill',
@@ -110,12 +108,8 @@ class Person
 
 class PersonTransformer extends AbstractTransformer
 {
-    protected static $propertyTransformers = [
-        'name'       => StringTransformer::class,
-        'age'        => IntegerTransformer::class,
-        'my_job'     => OccupationTransformer::class,
-        'my_friends' => PersonTransformer::class,
-        'pigLatin'   => PigLatinTransformer::class,
+    protected static $dataTypes = [
+        'my_friends' => Collection::class
     ];
 
     protected static $mappedProperties = [
@@ -124,6 +118,13 @@ class PersonTransformer extends AbstractTransformer
         'pigLatin'   => 'pigLatin',
         'my_job'     => 'occupation',
         'my_friends' => 'friends',
+    ];
+
+    protected static $transformers = [
+        'age'        => IntegerTransformer::class,
+        'my_job'     => OccupationTransformer::class,
+        'my_friends' => PersonTransformer::class,
+        'pigLatin'   => PigLatinTransformer::class,
     ];
 }
 
@@ -144,7 +145,7 @@ class Occupation
 
 class OccupationTransformer extends AbstractTransformer
 {
-    protected static $propertyTransformers = [
+    protected static $transformers = [
         'name' => StringTransformer::class,
     ];
 
@@ -155,9 +156,9 @@ class OccupationTransformer extends AbstractTransformer
 
 class PigLatinTransformer extends AbstractTransformer
 {
-    public function transform($data, $property, $key)
+    public function transform(ResourceInterface $resource)
     {
-        $value = $this->getPropertyValue($data, 'name');
+        $value = $this->getPropertyValue($resource->getData(), 'name');
         $parts = explode(' ', $value);
         $converted = [];
         foreach ($parts as $part) {

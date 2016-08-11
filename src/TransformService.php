@@ -3,7 +3,8 @@ declare(strict_types = 1);
 
 namespace Diaclone;
 
-use Diaclone\Transformers\AbstractTransformer;
+use Diaclone\Resource\Item;
+use Diaclone\Transformer\AbstractTransformer;
 use Diaclone\Serializer\ArraySerializer;
 use Diaclone\Serializer\SerializerAbstract;
 
@@ -21,9 +22,10 @@ class TransformService
         $this->serializer = $serializer ? $serializer : new ArraySerializer();
     }
 
-    public function transform($data, AbstractTransformer $transformer, $key = 'data', $fieldMap = '*'): array
+    public function transform($data, AbstractTransformer $transformer, $key = 'data', $fieldMap = '*', $resourceClass = Item::class): array
     {
-        $transformed = $transformer->transform($data, '', $fieldMap);
+        $resource = new $resourceClass($data, '', $fieldMap);
+        $transformed = $transformer->transform($resource);
 
         return [$key => $transformed];
     }
