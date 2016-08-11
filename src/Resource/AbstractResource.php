@@ -9,7 +9,7 @@ abstract class AbstractResource implements ResourceInterface
     protected $fieldMap;
     protected $resourceKey;
 
-    public function __construct($data, $resourceKey, $fieldMap)
+    public function __construct($data, $resourceKey, $fieldMap = '*')
     {
         $this->data = $data;
         $this->fieldMap = $fieldMap;

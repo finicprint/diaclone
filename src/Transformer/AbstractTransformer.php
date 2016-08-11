@@ -58,11 +58,6 @@ abstract class AbstractTransformer
         return isset(static::$transformers[$property]) ? static::$transformers[$property] : StringTransformer::class;
     }
 
-    public function transform(ResourceInterface $resource)
-    {
-        return $resource->transform($this);
-    }
-
     public function getPropertyValue($data, $property)
     {
         if (empty($property)) {
@@ -80,5 +75,15 @@ abstract class AbstractTransformer
         }
 
         return $data->$property;
+    }
+
+    public function transform(ResourceInterface $resource)
+    {
+        return $resource->transform($this);
+    }
+
+    public function untransform(ResourceInterface $resource)
+    {
+        return $resource->untransform($this);
     }
 }

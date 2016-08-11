@@ -23,4 +23,18 @@ class Collection extends AbstractResource
 
         return $response;
     }
+
+    public function untransform(AbstractTransformer $transformer)
+    {
+        $data = $this->getData();
+        if (empty($data)) {
+            return $data;
+        }
+        $response = [];
+        foreach ($data as $item) {
+            $response[] = $transformer->untransform(new Item($item, ''));
+        }
+
+        return $response;
+    }
 }
