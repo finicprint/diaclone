@@ -3,32 +3,67 @@ declare(strict_types = 1);
 
 namespace Diaclone\Transformer;
 
-use Illuminate\Support\Collection;
+use Diaclone\Resource\Item;
+use Diaclone\Resource\ResourceInterface;
 
 abstract class AbstractTransformer
 {
-    public function transform($data, $property, $fieldMap): array
+    /**
+     * The type of data that is being handled. The key is the system name of the property, the class name of the
+     * Resource is the value. If not configured it is an Item
+     *
+     * $dataTypes = [
+     *     'fullName' => Item::class
+     *     'my_friends' => Collection::class,
+     * ];
+     */
+    protected static $dataTypes = [];
+
+    /**
+     * Every valid property must have a property mapping. The key is the system name for the property or the property name of the
+     * getter (for example 'fullName' would use the getter 'getFullName', even thought the 'fullName' property doesn't exist,
+     * the value is the public name for the property
+     *
+     * $mappedProperties = [
+     *     'age' => 'age,
+     *     'full_name' => 'name',
+     *     'my_friends' => 'friends',
+     * ];
+     */
+    protected static $mappedProperties = [];
+
+    /**
+     * How the data should be transformed. The key is the system name of the property, the class name of the Transformer
+     * is the value. If the property is not configured, it defaults to a StringTransformer
+     *
+     * $transformers = [
+     *     'age' => IntegerTransformer::class,
+     * ];
+     */
+    protected static $transformers = [];
+
+
+    public function getDataType(string $property): string
     {
-        $value = $this->getPropertyValue($data, $property);
-        if (empty($value)) {
-            return $value;
-        }
-        $fieldMap = $fieldMap; // todo: nested field map
-        if ($this->isCollection($value)) {
-            $response = [];
-
-            foreach ($value as $item) {
-                $transformerClass = static::$propertyTransformers[$property];
-                $response[] = (new $transformerClass)->transform($item, '', $fieldMap);
-            }
-
-            return $response;
-        }
-
-        return $this->_transform($value, $property, $fieldMap);
+        return isset(static::$dataTypes[$property]) ? static::$dataTypes[$property] : Item::class;
     }
 
-    protected function getPropertyValue($data, $property)
+    public function getMappedProperties(): array
+    {
+        return static::$mappedProperties;
+    }
+
+    public function getPropertyTransformer(string $property): string
+    {
+        return isset(static::$transformers[$property]) ? static::$transformers[$property] : StringTransformer::class;
+    }
+
+    public function transform(ResourceInterface $resource)
+    {
+        return $resource->transform($this);
+    }
+
+    public function getPropertyValue($data, $property)
     {
         if (empty($property)) {
             return $data;
@@ -38,41 +73,12 @@ abstract class AbstractTransformer
             return $data[$property];
         }
 
-        $getter = 'get' . ucfirst(camel_case($property));
+        // convert property to camelCase
+        $getter = 'get' . str_replace(' ', '', ucwords(str_replace(['-', '_'], ' ', $property)));
         if (method_exists($data, $getter)) {
             return $data->$getter();
         }
 
         return $data->$property;
-    }
-
-    protected function _transform($data, $property, $fieldMap): array
-    {
-        $includeAll = false;
-        $response = [];
-        if ($fieldMap === '*') {
-            $includeAll = true;
-            $fieldMap = array_keys(static::$mappedProperties);
-        }
-        foreach ($fieldMap as $property) {
-            // todo: exception if value isn't in transformer or mapped
-            $transformerClass = static::$propertyTransformers[$property];
-
-            if ($includeAll) {
-                $propertiesToTransform = '*';
-            }
-            $response[static::$mappedProperties[$property]] = (new $transformerClass)->transform($data, $property, $propertiesToTransform);
-        }
-
-        return $response;
-    }
-
-    protected function isCollection($value): bool
-    {
-        if ($value instanceof Collection) {
-            return true;
-        }
-
-        return false;
     }
 }

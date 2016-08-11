@@ -3,10 +3,12 @@ declare(strict_types = 1);
 
 namespace Diaclone\Transformer;
 
+use Diaclone\Resource\ResourceInterface;
+
 class StringTransformer extends AbstractTransformer
 {
-    public function transform($data, $property, $fieldMap)
+    public function transform(ResourceInterface $resource)
     {
-        return (string)$this->getPropertyValue($data, $property);
+        return (string)$this->getPropertyValue($resource->getData(), $resource->getPropertyName());
     }
 }
