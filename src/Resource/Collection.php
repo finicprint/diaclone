@@ -13,12 +13,10 @@ class Collection extends AbstractResource
         if (empty($value)) {
             return $value;
         }
-        $propertyTransformerClass = $transformer->getPropertyTransformer($this->getPropertyName());
-        $propertyTransformer = new $propertyTransformerClass();
         $fieldMap = '*'; // todo: nested field map
         $response = [];
         foreach ($value as $item) {
-            $response[] = $propertyTransformer->transform(new Item($item, '', $fieldMap));
+            $response[] = $transformer->transform(new Item($item, '', $fieldMap));
         }
 
         return $response;
