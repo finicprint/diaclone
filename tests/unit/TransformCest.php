@@ -117,38 +117,90 @@ class TransformCest
             'person' => [
                 'name'       => 'My name is Bill',
                 'age'        => 42,
-                'my_job' => [
+                'my_job'     => [
                     'name' => 'Piano Man',
                 ],
-                'my_friends'    => [
+                'my_friends' => [
                     [
-                        'name'       => 'My name is Paul',
-                        'age'        => 42,
+                        'name'   => 'My name is Paul',
+                        'age'    => 42,
                         'my_job' => [
                             'name' => 'Real estate novelist',
                         ],
                     ],
                     [
-                        'name'       => 'My name is John',
-                        'age'        => 42,
+                        'name'   => 'My name is John',
+                        'age'    => 42,
                         'my_job' => [
                             'name' => 'Bartender',
                         ],
                     ],
                     [
-                        'name'       => 'My name is Davy',
-                        'age'        => 42,
+                        'name'   => 'My name is Davy',
+                        'age'    => 42,
                         'my_job' => [
                             'name' => 'Sailor',
                         ],
                     ],
                     [
-                        'name'       => 'My name is Unknown',
-                        'age'        => 42,
+                        'name'   => 'My name is Unknown',
+                        'age'    => 42,
                         'my_job' => [
                             'name' => 'Waitress',
                         ],
                     ],
+                ],
+            ],
+        ];
+        $I->assertEquals($expected, $output);
+    }
+
+    public function testTransformationCollectionAll(UnitTester $I)
+    {
+        $friends = [
+            new Person('Paul', 'Real estate novelist'),
+            new Person('John', 'Bartender'),
+            new Person('Davy', 'Sailor'),
+            new Person('Unknown', 'Waitress'),
+        ];
+        $output = (new TransformService())->transform($friends, new PersonTransformer(), 'people', '*', Collection::class);
+        $expected = [
+            'people' => [
+                [
+                    'name'       => 'My name is Paul',
+                    'age'        => 42,
+                    'pigLatin'   => 'Ymay amenay isyay Aulpay',
+                    'occupation' => [
+                        'name' => 'Real estate novelist',
+                    ],
+                    'friends'    => [],
+                ],
+                [
+                    'name'       => 'My name is John',
+                    'age'        => 42,
+                    'pigLatin'   => 'Ymay amenay isyay Ohnjay',
+                    'occupation' => [
+                        'name' => 'Bartender',
+                    ],
+                    'friends'    => [],
+                ],
+                [
+                    'name'       => 'My name is Davy',
+                    'age'        => 42,
+                    'pigLatin'   => 'Ymay amenay isyay Avyday',
+                    'occupation' => [
+                        'name' => 'Sailor',
+                    ],
+                    'friends'    => [],
+                ],
+                [
+                    'name'       => 'My name is Unknown',
+                    'age'        => 42,
+                    'pigLatin'   => 'Ymay amenay isyay Unknownyay',
+                    'occupation' => [
+                        'name' => 'Waitress',
+                    ],
+                    'friends'    => [],
                 ],
             ],
         ];
@@ -194,7 +246,7 @@ class Person
 class PersonTransformer extends AbstractTransformer
 {
     protected static $dataTypes = [
-        'my_friends' => Collection::class
+        'my_friends' => Collection::class,
     ];
 
     protected static $mappedProperties = [
