@@ -45,7 +45,7 @@ abstract class AbstractTransformer
 
     public function getDataType(string $property): string
     {
-        return isset(static::$dataTypes[$property]) ? static::$dataTypes[$property] : Item::class;
+        return static::$dataTypes[$property] ?? Item::class;
     }
 
     public function getMappedProperties(): array
@@ -55,7 +55,7 @@ abstract class AbstractTransformer
 
     public function getPropertyTransformer(string $property): string
     {
-        return isset(static::$transformers[$property]) ? static::$transformers[$property] : StringTransformer::class;
+        return static::$transformers[$property] ?? StringTransformer::class;
     }
 
     public function getPropertyValue($data, $property)
