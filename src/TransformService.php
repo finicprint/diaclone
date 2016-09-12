@@ -22,12 +22,12 @@ class TransformService
         $this->serializer = $serializer ? $serializer : new ArraySerializer();
     }
 
-    public function transform($data, AbstractTransformer $transformer, $key = 'data', $fieldMap = '*', $resourceClass = Item::class): array
+    public function transform($data, AbstractTransformer $transformer, $key = '', $fieldMap = '*', $resourceClass = Item::class): array
     {
         $resource = new $resourceClass($data, '', $fieldMap);
         $transformed = $transformer->transform($resource);
 
-        return [$key => $transformed];
+        return '' === $key ? $transformed : [$key => $transformed];
     }
 
     public function untransform($data, AbstractTransformer $transformer, $resourceClass = Item::class): array
