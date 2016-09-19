@@ -31,9 +31,12 @@ class Item extends AbstractResource
             $dataType = new $dataTypeClass($data, $property, $propertiesToTransform);
 
             $propertyTransformerClass = $transformer->getPropertyTransformer($property);
+            /** @var AbstractTransformer $propertyTransformer */
             $propertyTransformer = new $propertyTransformerClass();
 
-            $response[$mappedProperties[$property]] = $propertyTransformer->transform($dataType);
+            if ($propertyTransformer->allowTransform()) {
+                $response[$mappedProperties[$property]] = $propertyTransformer->transform($dataType);
+            }
         }
 
         return $response;
@@ -51,9 +54,12 @@ class Item extends AbstractResource
             $dataType = new $dataTypeClass($data, $property);
 
             $propertyTransformerClass = $transformer->getPropertyTransformer($property);
+            /** @var AbstractTransformer $propertyTransformer */
             $propertyTransformer = new $propertyTransformerClass();
 
-            $response[$property] = $propertyTransformer->untransform($dataType);
+            if ($propertyTransformer->allowUntransform()) {
+                $response[$property] = $propertyTransformer->untransform($dataType);
+            }
         }
 
         return $response;

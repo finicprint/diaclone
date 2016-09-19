@@ -42,6 +42,15 @@ abstract class AbstractTransformer
      */
     protected static $transformers = [];
 
+    public function allowUntransform()
+    {
+        return true;
+    }
+
+    public function allowTransform()
+    {
+        return true;
+    }
 
     public function getDataType(string $property): string
     {
