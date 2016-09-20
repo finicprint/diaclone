@@ -10,12 +10,10 @@ class RestrictedTransformingCest
 {
     public function testUnallowedInput(UnitTester $I)
     {
-        $output = (new TransformService())->untransform(['credential' => ['username' => 'user', 'password' => '8675309']],
+        $output = (new TransformService())->untransform(['username' => 'user', 'password' => '8675309'],
             new CredentialInputTransformerTransformer());
         $expected = [
-            'credential' => [
                 'UserName' => 'user',
-            ],
         ];
         $I->assertEquals($expected, $output);
 
@@ -41,13 +39,11 @@ class RestrictedTransformingCest
         ];
         $I->assertEquals($expected, $output);
 
-        $output = (new TransformService())->untransform(['credential' => ['username' => 'user', 'password' => '8675309']],
+        $output = (new TransformService())->untransform(['username' => 'user', 'password' => '8675309'],
             new CredentialOutputTransformerTransformer());
         $expected = [
-            'credential' => [
                 'UserName' => 'user',
                 'Password' => '8675309',
-            ],
         ];
         $I->assertEquals($expected, $output);
     }
