@@ -74,7 +74,7 @@ abstract class AbstractTransformer
         }
 
         if (is_array($data)) {
-            return $data[$property];
+            return $data[$property] ?? null;
         }
 
         // convert property to camelCase
@@ -83,7 +83,7 @@ abstract class AbstractTransformer
             return $data->$getter();
         }
 
-        return $data->$property;
+        return $data->$property ?? null;
     }
 
     public function transform(ResourceInterface $resource)
