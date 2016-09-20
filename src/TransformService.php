@@ -32,10 +32,8 @@ class TransformService
 
     public function untransform($data, AbstractTransformer $transformer, $resourceClass = Item::class): array
     {
-        $key = key($data);
-        $resource = new $resourceClass($data[$key], '');
-        $untransformed = $transformer->untransform($resource);
+        $resource = new $resourceClass($data);
 
-        return [$key => $untransformed];
+        return $transformer->untransform($resource);
     }
 }
