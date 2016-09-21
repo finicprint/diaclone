@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Diaclone\Resource;
 
+use Diaclone\Exception\TransformException;
 use Diaclone\Transformer\AbstractTransformer;
 
 class Item extends AbstractResource
@@ -48,6 +49,9 @@ class Item extends AbstractResource
 
         $response = [];
         foreach ($this->getData() as $incomingProperty => $data) {
+            if (empty($mapping[$incomingProperty])) {
+                throw new TransformException("'$incomingProperty' is not defined in " . get_class($transformer));
+            }
             $property = $mapping[$incomingProperty];
 
             $dataTypeClass = $transformer->getDataType($property);
