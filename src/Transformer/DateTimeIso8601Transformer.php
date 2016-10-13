@@ -10,7 +10,7 @@ class DateTimeIso8601Transformer extends AbstractTransformer
 {
     public function transform(ResourceInterface $resource)
     {
-        return Carbon::instance($this->getPropertyValue($resource->getData(), $resource->getPropertyName()))->toIso8601String();
+        return Carbon::instance($this->getPropertyValueFromResource($resource))->toIso8601String();
     }
 
     public function untransform(ResourceInterface $resource)

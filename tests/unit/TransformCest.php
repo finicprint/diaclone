@@ -227,7 +227,7 @@ class TransformCest
             new Person('Paul', 'Real estate novelist'),
             new Person('John', 'Bartender'),
             new Person('Davy', 'Sailor'),
-            new Person('Unknown', 'Waitress'),
+            new Person('Elizabeth', 'Waitress'),
         ];
         $output = (new TransformService())->transform($friends, new PersonTransformer(), '', '*',
             Collection::class);
@@ -262,7 +262,7 @@ class TransformCest
             [
                 'name'       => 'My name is Elizabeth',
                 'age'        => 42,
-                'pigLatin'   => 'Ymay amenay isyay Unknownyay',
+                'pigLatin'   => 'Ymay amenay isyay Elizabethyay',
                 'occupation' => [
                     'name' => 'Waitress',
                 ],

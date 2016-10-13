@@ -5,15 +5,15 @@ namespace Diaclone\Transformer;
 
 use Diaclone\Resource\ResourceInterface;
 
-class IntegerTransformer extends AbstractTransformer
+class BooleanTransformer extends AbstractTransformer
 {
     public function transform(ResourceInterface $resource)
     {
-        return (int)$this->getPropertyValueFromResource($resource);
+        return (bool)$this->getPropertyValueFromResource($resource);
     }
 
     public function untransform(ResourceInterface $resource)
     {
-        return $resource->getData();
+        return (bool)$resource->getData();
     }
 }

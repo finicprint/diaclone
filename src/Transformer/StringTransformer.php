@@ -9,7 +9,7 @@ class StringTransformer extends AbstractTransformer
 {
     public function transform(ResourceInterface $resource)
     {
-        return (string)$this->getPropertyValue($resource->getData(), $resource->getPropertyName());
+        return (string)$this->getPropertyValueFromResource($resource);
     }
 
     public function untransform(ResourceInterface $resource)

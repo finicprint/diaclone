@@ -86,6 +86,11 @@ abstract class AbstractTransformer
         return $data->$property ?? null;
     }
 
+    public function getPropertyValueFromResource(ResourceInterface $resource)
+    {
+        return $this->getPropertyValue($resource->getData(), $resource->getPropertyName());
+    }
+
     public function transform(ResourceInterface $resource)
     {
         return $resource->transform($this);
