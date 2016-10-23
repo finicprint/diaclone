@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Diaclone\Resource;
 
-use Diaclone\Exception\TransformException;
+use Diaclone\Exception\UnrecognizedInputException;
 use Diaclone\Transformer\AbstractTransformer;
 
 class Item extends AbstractResource
@@ -45,12 +45,14 @@ class Item extends AbstractResource
 
     public function untransform(AbstractTransformer $transformer)
     {
+        $unrecognizedFields = [];
         $mapping = array_flip($transformer->getMappedProperties());
 
         $response = [];
         foreach ($this->getData() as $incomingProperty => $data) {
             if (empty($mapping[$incomingProperty])) {
-                throw new TransformException("'$incomingProperty' is not defined in " . get_class($transformer));
+                $unrecognizedFields[] = $incomingProperty;
+                continue;
             }
             $property = $mapping[$incomingProperty];
 
@@ -64,6 +66,10 @@ class Item extends AbstractResource
             if ($propertyTransformer->allowUntransform()) {
                 $response[$property] = $propertyTransformer->untransform($dataType);
             }
+        }
+
+        if (! empty($unrecognizedFields)) {
+            throw new UnrecognizedInputException($unrecognizedFields, $transformer);
         }
 
         return $response;
