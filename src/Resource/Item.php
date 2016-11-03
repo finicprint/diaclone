@@ -3,31 +3,38 @@ declare(strict_types = 1);
 
 namespace Diaclone\Resource;
 
+use Diaclone\Exception\MalformedInputException;
 use Diaclone\Exception\UnrecognizedInputException;
 use Diaclone\Transformer\AbstractTransformer;
+use Exception;
 
 class Item extends AbstractResource
 {
     public function transform(AbstractTransformer $transformer)
     {
+        $mappedProperties = $transformer->getMappedProperties();
+        $includeAll = false;
+        $fieldMap = [];
+        $response = [];
+
         if ($propertyName = $this->getPropertyName()) {
-            $data = $transformer->getPropertyValue($this->getData(), $this->getPropertyName());
+            $data = $transformer->getPropertyValue($this->getData(), $propertyName);
         } else {
             $data = $this->getData();
         }
-        $mappedProperties = $transformer->getMappedProperties();
-        $includeAll = false;
-        $response = [];
+
         if ($this->fieldMap === '*') {
             $includeAll = true;
             $fieldMap = array_keys($mappedProperties);
         }
+
         foreach ($fieldMap as $property) {
             // todo: exception if value isn't mapped
 
             if ($includeAll) {
                 $propertiesToTransform = '*';
             }
+
             $dataTypeClass = $transformer->getDataType($property);
             $dataType = new $dataTypeClass($data, $property, $propertiesToTransform);
 
@@ -46,9 +53,11 @@ class Item extends AbstractResource
     public function untransform(AbstractTransformer $transformer)
     {
         $unrecognizedFields = [];
+        $malformedFields = [];
+        $response = [];
+
         $mapping = array_flip($transformer->getMappedProperties());
 
-        $response = [];
         foreach ($this->getData() as $incomingProperty => $data) {
             if (empty($mapping[$incomingProperty])) {
                 $unrecognizedFields[] = $incomingProperty;
@@ -64,12 +73,20 @@ class Item extends AbstractResource
             $propertyTransformer = new $propertyTransformerClass();
 
             if ($propertyTransformer->allowUntransform()) {
-                $response[$property] = $propertyTransformer->untransform($dataType);
+                try {
+                    $response[$property] = $propertyTransformer->untransform($dataType);
+                } catch (Exception $e) {
+                    $malformedFields[] = $incomingProperty;
+                }
             }
         }
 
         if (! empty($unrecognizedFields)) {
             throw new UnrecognizedInputException($unrecognizedFields, $transformer);
+        }
+
+        if (! empty($malformedFields)) {
+            throw new MalformedInputException($malformedFields);
         }
 
         return $response;
