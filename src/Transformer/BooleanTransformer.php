@@ -9,11 +9,24 @@ class BooleanTransformer extends AbstractTransformer
 {
     public function transform(ResourceInterface $resource)
     {
-        return (bool)$this->getPropertyValueFromResource($resource);
+        $value = $this->getPropertyValueFromResource($resource);
+
+        return (bool)$value;
     }
 
     public function untransform(ResourceInterface $resource)
     {
-        return (bool)$resource->getData();
+        $value = strtolower((string)$resource->getData());
+
+        if (in_array($value, ['yes', 'true', 'on', '1', 1])) {
+            return true;
+        }
+
+        if (in_array($value, ['no', 'false', 'off', '0', 0])) {
+            return false;
+        }
+
+        return $value;
+        // throw new MalformedInputException($resource->getPropertyName(), 'must be boolean');
     }
 }
