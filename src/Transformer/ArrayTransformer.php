@@ -14,6 +14,6 @@ class ArrayTransformer extends AbstractTransformer
 
     public function untransform(ResourceInterface $resource)
     {
-        return $resource;
+        return $this->getPropertyValueFromResource($resource);
     }
 }
