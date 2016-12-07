@@ -1,98 +1,58 @@
 <?php
 declare(strict_types = 1);
 
-use Diaclone\Transformer\{
-    AbstractTransformer, InputOnlyStringTransformer, OutputOnlyStringTransformer, StringTransformer
-};
 use Diaclone\TransformService;
+use Test\Unit\Support\Entities\Credential;
+use Test\Unit\Support\Transformers\CredentialInputTransformer;
+use Test\Unit\Support\Transformers\CredentialOutputTransformer;
 
 class RestrictedTransformingCest
 {
     public function testUnallowedInput(UnitTester $I)
     {
         $output = (new TransformService())->untransform(['username' => 'user', 'password' => '8675309'],
-            new CredentialInputTransformerTransformer());
+            new CredentialInputTransformer());
+
         $expected = [
-                'UserName' => 'user',
+            'UserName' => 'user',
         ];
+
         $I->assertEquals($expected, $output);
 
         $output = (new TransformService())->transform(new Credential('user', '8675309'),
-            new CredentialInputTransformerTransformer(), 'credential');
+            new CredentialInputTransformer(), 'credential');
+
         $expected = [
             'credential' => [
                 'username' => 'user',
                 'password' => '8675309',
             ],
         ];
+
         $I->assertEquals($expected, $output);
     }
 
     public function testUnallowedOutput(UnitTester $I)
     {
         $output = (new TransformService())->transform(new Credential('user', '8675309'),
-            new CredentialOutputTransformerTransformer(), 'credential');
+            new CredentialOutputTransformer(), 'credential');
+
         $expected = [
             'credential' => [
                 'username' => 'user',
             ],
         ];
+
         $I->assertEquals($expected, $output);
 
         $output = (new TransformService())->untransform(['username' => 'user', 'password' => '8675309'],
-            new CredentialOutputTransformerTransformer());
+            new CredentialOutputTransformer());
+
         $expected = [
-                'UserName' => 'user',
-                'Password' => '8675309',
+            'UserName' => 'user',
+            'Password' => '8675309',
         ];
+
         $I->assertEquals($expected, $output);
-    }
-}
-
-class CredentialInputTransformerTransformer extends AbstractTransformer
-{
-    protected static $transformers = [
-        'UserName' => StringTransformer::class,
-        'Password' => OutputOnlyStringTransformer::class,
-    ];
-
-    protected static $mappedProperties = [
-        'UserName' => 'username',
-        'Password' => 'password',
-    ];
-}
-
-class CredentialOutputTransformerTransformer extends AbstractTransformer
-{
-    protected static $transformers = [
-        'UserName' => StringTransformer::class,
-        'Password' => InputOnlyStringTransformer::class,
-    ];
-
-    protected static $mappedProperties = [
-        'UserName' => 'username',
-        'Password' => 'password',
-    ];
-}
-
-class Credential
-{
-    protected $password;
-    protected $username;
-
-    public function __construct($username, $password)
-    {
-        $this->password = $password;
-        $this->username = $username;
-    }
-
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    public function getUserName()
-    {
-        return $this->username;
     }
 }
