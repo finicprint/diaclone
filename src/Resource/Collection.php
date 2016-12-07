@@ -9,14 +9,19 @@ class Collection extends AbstractResource
 {
     public function transform(AbstractTransformer $transformer)
     {
-        $value = $transformer->getPropertyValue($this->getData(), $this->getPropertyName());
-        if (empty($value)) {
-            return $value;
+        $items = $transformer->getPropertyValue($this->getData(), $this->getPropertyName());
+
+        if (empty($items)) {
+            return $items;
         }
+
         $fieldMap = '*'; // todo: nested field map
         $response = [];
-        foreach ($value as $item) {
-            $response[] = $transformer->transform(new Item($item, '', $fieldMap));
+
+        foreach ($items as $item) {
+            if ($transformedItem = $transformer->transform(new Item($item, '', $fieldMap))) {
+                $response[] = $transformedItem;
+            }
         }
 
         return $response;
@@ -28,6 +33,7 @@ class Collection extends AbstractResource
         if (empty($data)) {
             return $data;
         }
+
         $response = [];
         foreach ($data as $item) {
             $response[] = $transformer->untransform(new Item($item, ''));

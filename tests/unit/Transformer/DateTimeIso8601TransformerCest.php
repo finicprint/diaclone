@@ -2,8 +2,8 @@
 declare(strict_types = 1);
 
 use Carbon\Carbon;
-use Diaclone\Transformer\DateTimeIso8601Transformer;
 use Diaclone\Resource\Item;
+use Diaclone\Transformer\DateTimeIso8601Transformer;
 
 class DateTimeIso8601TransformerCest
 {
@@ -11,8 +11,10 @@ class DateTimeIso8601TransformerCest
     {
         $transformer = new DateTimeIso8601Transformer();
         $resource = new Item(new DateTime('2016-09-21 08:53:00'));
+
         $isoDateTime = $transformer->transform($resource);
-        $I->assertSame('2016-09-21T08:53:00+00:00', $isoDateTime);
+
+        $I->assertSame('2016-09-21T08:53:00+0000', $isoDateTime);
     }
 
     public function testJavascriptUntransform(UnitTester $I)
