@@ -2,7 +2,10 @@
 declare(strict_types = 1);
 
 use Diaclone\TransformService;
+use Test\Unit\Support\Entities\Credential;
 use Test\Unit\Support\Entities\Person;
+use Test\Unit\Support\Transformers\CredentialIntegerTransformer;
+use Test\Unit\Support\Transformers\CredentialTransformer;
 use Test\Unit\Support\Transformers\PersonTransformer;
 
 class TransformNullCest
@@ -15,7 +18,7 @@ class TransformNullCest
             'person' => [],
         ];
 
-        $I->assertEquals($expected, $output);
+        $I->assertSame($expected, $output);
     }
 
     public function testTransformationNullNoKey(UnitTester $I)
@@ -24,7 +27,7 @@ class TransformNullCest
 
         $expected = [];
 
-        $I->assertEquals($expected, $output);
+        $I->assertSame($expected, $output);
     }
 
     public function testTransformationNullChild(UnitTester $I)
@@ -69,7 +72,7 @@ class TransformNullCest
             ],
         ];
 
-        $I->assertEquals($expected, $output);
+        $I->assertSame($expected, $output);
     }
 
     public function testTransformationNullChildNoKey(UnitTester $I)
@@ -113,6 +116,38 @@ class TransformNullCest
 
         ];
 
-        $I->assertEquals($expected, $output);
+        $I->assertSame($expected, $output);
+    }
+
+    public function testTransformationNullStringProperty(UnitTester $I)
+    {
+        $cred = new Credential('user', null);
+
+        $output = (new TransformService())->transform($cred, new CredentialTransformer(), 'credential');
+
+        $expected = [
+            'credential' => [
+                'username' => 'user',
+                'password' => '',
+            ],
+        ];
+
+        $I->assertSame($expected, $output);
+    }
+
+    public function testTransformationNullIntegerProperty(UnitTester $I)
+    {
+        $cred = new Credential('user', null);
+
+        $output = (new TransformService())->transform($cred, new CredentialIntegerTransformer(), 'credential');
+
+        $expected = [
+            'credential' => [
+                'username' => 'user',
+                'password' => 0,
+            ],
+        ];
+
+        $I->assertSame($expected, $output);
     }
 }
