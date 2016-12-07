@@ -8,11 +8,13 @@
     "require": {
         "php": ">=7.0.0",
         "codeception/codeception": "^2.2",
-        "nesbot/carbon": "^1.21"
+        "nesbot/carbon": "1.21.0"
     },
     "autoload": {
         "psr-4": {
-            "Diaclone\\": "src/"
+            "Diaclone\\": "src/",
+            "Test\\Functional\\": "tests/functional",
+            "Test\\Unit\\": "tests/unit"
         }
     },
     "extra": {
