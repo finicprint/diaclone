@@ -5,17 +5,26 @@ namespace Diaclone\Serializer;
 
 use Diaclone\Pagination\CursorInterface;
 use Diaclone\Pagination\PaginatorInterface;
+use stdClass;
 
-class ArraySerializer extends SerializerAbstract
+class SimpleJsonSerializer extends SerializerAbstract
 {
     public function collection($resourceKey, $data)
     {
-        return empty($resourceKey) ? $data : [$resourceKey => $data];
+        return json_encode(empty($resourceKey) ? (array)$data : [$resourceKey => $data], JSON_PRETTY_PRINT);
     }
 
     public function item($resourceKey, $data)
     {
-        return empty($resourceKey) ? $data : [$resourceKey => $data];
+        if (empty($data)) {
+            $data = new stdClass();
+        }
+
+        if (! empty($resourceKey)) {
+            $data = [$resourceKey => $data];
+        }
+
+        return json_encode($data, JSON_PRETTY_PRINT);
     }
 
     public function meta(array $meta)

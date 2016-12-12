@@ -1,19 +1,10 @@
 <?php
-
-/*
- * This file is part of the Diaclone package.
- *
- * (c) Phil Sturgeon <me@philsturgeon.uk>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+declare(strict_types = 1);
 
 namespace Diaclone\Serializer;
 
 use Diaclone\Pagination\CursorInterface;
 use Diaclone\Pagination\PaginatorInterface;
-use Diaclone\Resource\ResourceInterface;
 
 abstract class SerializerAbstract
 {
@@ -25,7 +16,7 @@ abstract class SerializerAbstract
      *
      * @return array
      */
-    abstract public function collection($resourceKey, array $data);
+    abstract public function collection($resourceKey, $data);
 
     /**
      * Serialize an item.
@@ -35,7 +26,7 @@ abstract class SerializerAbstract
      *
      * @return array
      */
-    abstract public function item($resourceKey, array $data);
+    abstract public function item($resourceKey, $data);
 
     /**
      * Serialize the meta.
@@ -101,8 +92,8 @@ abstract class SerializerAbstract
     /**
      * Hook for the serializer to modify the final list of includes.
      *
-     * @param array             $includedData
-     * @param array             $data
+     * @param array $includedData
+     * @param array $data
      *
      * @return array
      */

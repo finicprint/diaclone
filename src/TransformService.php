@@ -3,10 +3,11 @@ declare(strict_types = 1);
 
 namespace Diaclone;
 
+use Diaclone\Resource\Collection;
 use Diaclone\Resource\Item;
-use Diaclone\Transformer\AbstractTransformer;
 use Diaclone\Serializer\ArraySerializer;
 use Diaclone\Serializer\SerializerAbstract;
+use Diaclone\Transformer\AbstractTransformer;
 
 class TransformService
 {
@@ -19,15 +20,22 @@ class TransformService
     public function __construct(SerializerAbstract $serializer = null, int $recursionLimit = 10)
     {
         $this->recursionLimit = $recursionLimit;
-        $this->serializer = $serializer ? $serializer : new ArraySerializer();
+        $this->serializer = $serializer ?: new ArraySerializer();
     }
 
-    public function transform($data, AbstractTransformer $transformer, $key = '', $fieldMap = '*', $resourceClass = Item::class): array
+    public function transform($data, AbstractTransformer $transformer, $key = '', $fieldMap = '*', $resourceClass = Item::class)
     {
         $resource = new $resourceClass($data, '', $fieldMap);
         $transformed = $transformer->transform($resource);
 
-        return '' === $key ? $transformed : [$key => $transformed];
+        if ($resourceClass instanceof Collection) {
+            $serialized = $this->serializer->collection($key, $transformed);
+
+        } else {
+            $serialized = $this->serializer->item($key, $transformed);
+        }
+
+        return $serialized;
     }
 
     public function untransform($data, AbstractTransformer $transformer, $resourceClass = Item::class): array

@@ -1,6 +1,7 @@
 <?php
 declare(strict_types = 1);
 
+use Diaclone\Resource\Item;
 use Diaclone\TransformService;
 use Test\Unit\Support\Entities\Credential;
 use Test\Unit\Support\Entities\Person;
@@ -10,22 +11,12 @@ use Test\Unit\Support\Transformers\PersonTransformer;
 
 class TransformNullCest
 {
-    public function testTransformationNull(UnitTester $I)
+    public function testTransformNull(UnitTester $I)
     {
-        $output = (new TransformService())->transform([], new PersonTransformer(), 'person');
+        $resource = new Item([]);
+        $output = (new PersonTransformer())->transform($resource);
 
-        $expected = [
-            'person' => [],
-        ];
-
-        $I->assertSame($expected, $output);
-    }
-
-    public function testTransformationNullNoKey(UnitTester $I)
-    {
-        $output = (new TransformService())->transform([], new PersonTransformer());
-
-        $expected = [];
+        $expected = null;
 
         $I->assertSame($expected, $output);
     }
@@ -39,52 +30,9 @@ class TransformNullCest
             null,
         ];
 
-        $output = (new TransformService())->transform(new Person('Bill', 'Piano Man', $friends), new PersonTransformer(), 'person');
-
-        $expected = [
-            'person' => [
-                'name'       => 'My name is Bill',
-                'age'        => 42,
-                'pigLatin'   => 'Ymay amenay isyay Illbay',
-                'occupation' => [
-                    'name' => 'Piano Man',
-                ],
-                'friends'    => [
-                    [
-                        'name'       => 'My name is Paul',
-                        'age'        => 42,
-                        'pigLatin'   => 'Ymay amenay isyay Aulpay',
-                        'occupation' => [
-                            'name' => 'Real estate novelist',
-                        ],
-                        'friends'    => [],
-                    ],
-                    [
-                        'name'       => 'My name is John',
-                        'age'        => 42,
-                        'pigLatin'   => 'Ymay amenay isyay Ohnjay',
-                        'occupation' => [
-                            'name' => 'Bartender',
-                        ],
-                        'friends'    => [],
-                    ],
-                ],
-            ],
-        ];
-
-        $I->assertSame($expected, $output);
-    }
-
-    public function testTransformationNullChildNoKey(UnitTester $I)
-    {
-        $friends = [
-            new Person('Paul', 'Real estate novelist'),
-            new Person('John', 'Bartender'),
-            [],
-            null,
-        ];
-
-        $output = (new TransformService())->transform(new Person('Bill', 'Piano Man', $friends), new PersonTransformer());
+        $data = new Person('Bill', 'Piano Man', $friends);
+        $resource = new Item($data);
+        $output = (new PersonTransformer())->transform($resource);
 
         $expected = [
             'name'       => 'My name is Bill',

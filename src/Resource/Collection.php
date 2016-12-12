@@ -12,13 +12,13 @@ class Collection extends AbstractResource
         $items = $transformer->getPropertyValue($this->getData(), $this->getPropertyName());
 
         if (empty($items)) {
-            return $items;
+            return [];
         }
 
         $fieldMap = '*'; // todo: nested field map
         $response = [];
 
-        foreach ($items as $item) {
+        foreach ((array)$items as $item) {
             if ($transformedItem = $transformer->transform(new Item($item, '', $fieldMap))) {
                 $response[] = $transformedItem;
             }
