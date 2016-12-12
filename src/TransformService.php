@@ -28,7 +28,7 @@ class TransformService
         $resource = new $resourceClass($data, '', $fieldMap);
         $transformed = $transformer->transform($resource);
 
-        if ($resourceClass instanceof Collection) {
+        if ($resource instanceof Collection) {
             $serialized = $this->serializer->collection($key, $transformed);
 
         } else {

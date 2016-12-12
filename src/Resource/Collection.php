@@ -18,7 +18,7 @@ class Collection extends AbstractResource
         $fieldMap = '*'; // todo: nested field map
         $response = [];
 
-        foreach ((array)$items as $item) {
+        foreach ($items as $item) {
             if ($transformedItem = $transformer->transform(new Item($item, '', $fieldMap))) {
                 $response[] = $transformedItem;
             }
