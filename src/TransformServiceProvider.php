@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Diaclone;
 
+use Diaclone\Serializer\SimpleJsonSerializer;
 use Illuminate\Support\ServiceProvider;
 
 class TransformServiceProvider extends ServiceProvider
@@ -20,7 +21,7 @@ class TransformServiceProvider extends ServiceProvider
     protected function registerTransform()
     {
         $this->app->singleton('transform', function ($app) {
-            return new TransformService();
+            return new TransformService(new SimpleJsonSerializer());
         });
     }
 }

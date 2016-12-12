@@ -19,13 +19,12 @@ class Item extends AbstractResource
 
         if ($propertyName = $this->getPropertyName()) {
             $data = $transformer->getPropertyValue($this->getData(), $propertyName);
-
         } else {
             $data = $this->getData();
+        }
 
-            if (empty($data)) {
-                return [];
-            }
+        if (empty($data)) {
+            return null;
         }
 
         if ($this->fieldMap === '*') {

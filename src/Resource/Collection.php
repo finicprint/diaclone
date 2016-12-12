@@ -12,7 +12,7 @@ class Collection extends AbstractResource
         $items = $transformer->getPropertyValue($this->getData(), $this->getPropertyName());
 
         if (empty($items)) {
-            return $items;
+            return [];
         }
 
         $fieldMap = '*'; // todo: nested field map

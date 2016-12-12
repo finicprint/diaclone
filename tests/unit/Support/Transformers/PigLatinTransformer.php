@@ -11,6 +11,11 @@ class PigLatinTransformer extends AbstractTransformer
     public function transform(ResourceInterface $resource)
     {
         $value = $this->getPropertyValue($resource->getData(), 'name');
+
+        if (empty($value)) {
+            return '';
+        }
+
         $parts = explode(' ', $value);
         $converted = [];
         foreach ($parts as $part) {
