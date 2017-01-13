@@ -6,13 +6,14 @@ namespace Diaclone\Resource;
 abstract class AbstractResource implements ResourceInterface
 {
     protected $data;
+    /** @var FieldMap */
     protected $fieldMap;
     protected $resourceKey;
 
     public function __construct($data, $resourceKey = '', $fieldMap = '*')
     {
         $this->data = $data;
-        $this->fieldMap = $fieldMap;
+        $this->fieldMap = $fieldMap instanceof FieldMap ? $fieldMap : new FieldMap($fieldMap);
         $this->resourceKey = $resourceKey;
     }
 
@@ -26,7 +27,7 @@ abstract class AbstractResource implements ResourceInterface
         $this->data = $data;
     }
 
-    public function getFieldMap()
+    public function getFieldMap(): FieldMap
     {
         return $this->fieldMap;
     }

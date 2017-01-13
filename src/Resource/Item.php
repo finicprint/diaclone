@@ -3,18 +3,16 @@ declare(strict_types = 1);
 
 namespace Diaclone\Resource;
 
+use Exception;
 use Diaclone\Exception\MalformedInputException;
 use Diaclone\Exception\UnrecognizedInputException;
 use Diaclone\Transformer\AbstractTransformer;
-use Exception;
 
 class Item extends AbstractResource
 {
     public function transform(AbstractTransformer $transformer)
     {
         $mappedProperties = $transformer->getMappedProperties();
-        $includeAll = false;
-        $fieldMap = [];
         $response = [];
 
         if ($propertyName = $this->getPropertyName()) {
@@ -27,9 +25,16 @@ class Item extends AbstractResource
             return null;
         }
 
-        if ($this->fieldMap === '*') {
+        if ($this->fieldMap->isWildcard()) {
             $includeAll = true;
             $fieldMap = array_keys($mappedProperties);
+        } else {
+            // TODO: include partials
+            $includeAll = true;
+            $fieldMap = $this->fieldMap->getPartials();
+            if ($diff = array_diff($fieldMap, array_keys($mappedProperties))) {
+                throw new UnrecognizedInputException($diff);
+            }
         }
 
         foreach ($fieldMap as $property) {
