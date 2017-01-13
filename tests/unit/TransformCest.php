@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Test\Unit;
 
 use Diaclone\Resource\Collection;
+use Diaclone\Resource\FieldMap;
 use Diaclone\TransformService;
 use Test\Unit\Support\Entities\Person;
 use Test\Unit\Support\Transformers\PersonTransformer;
@@ -268,6 +269,50 @@ class TransformCest
                     'name' => 'Waitress',
                 ],
                 'friends'    => [],
+            ],
+        ];
+        $I->assertEquals($expected, $output);
+    }
+
+    public function testTransformationCollectionPartial(UnitTester $I)
+    {
+        $friends = [
+            new Person('Paul', 'Real estate novelist'),
+            new Person('John', 'Bartender'),
+            new Person('Davy', 'Sailor'),
+            new Person('Elizabeth', 'Waitress'),
+        ];
+
+        $fieldMap = new FieldMap(['name', 'my_job']);
+
+        $output = (new TransformService())->transform($friends, new PersonTransformer(), 'people', $fieldMap,
+            Collection::class);
+        $expected = [
+            'people' => [
+                [
+                    'name'       => 'My name is Paul',
+                    'occupation' => [
+                        'name' => 'Real estate novelist',
+                    ],
+                ],
+                [
+                    'name'       => 'My name is John',
+                    'occupation' => [
+                        'name' => 'Bartender',
+                    ],
+                ],
+                [
+                    'name'       => 'My name is Davy',
+                    'occupation' => [
+                        'name' => 'Sailor',
+                    ],
+                ],
+                [
+                    'name'       => 'My name is Elizabeth',
+                    'occupation' => [
+                        'name' => 'Waitress',
+                    ],
+                ],
             ],
         ];
         $I->assertEquals($expected, $output);
