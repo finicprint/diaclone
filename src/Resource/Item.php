@@ -3,10 +3,10 @@ declare(strict_types = 1);
 
 namespace Diaclone\Resource;
 
-use Exception;
 use Diaclone\Exception\MalformedInputException;
 use Diaclone\Exception\UnrecognizedInputException;
 use Diaclone\Transformer\AbstractTransformer;
+use Exception;
 
 class Item extends AbstractResource
 {
@@ -84,6 +84,8 @@ class Item extends AbstractResource
             if ($propertyTransformer->allowUntransform()) {
                 try {
                     $response[$property] = $propertyTransformer->untransform($dataType);
+                } catch (UnrecognizedInputException $e) {
+                    throw $e;
                 } catch (Exception $e) {
                     $malformedFields[] = $incomingProperty;
                 }
