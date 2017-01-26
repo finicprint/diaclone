@@ -1,0 +1,8 @@
+machine:
+  timezone:
+    UTC
+  php:
+    version: 7.0.4
+test:
+  override:
+    - php vendor/codeception/codeception/codecept run unit && echo 1 > $CIRCLE_ARTIFACTS/unit_success.txt
