@@ -47,6 +47,10 @@ class DateTimeIso8601Transformer extends AbstractTransformer
     {
         $value = $resource->getData();
 
-        return $value ? new Carbon($value) : null;
+        try {
+            return new Carbon($value);
+        } catch (Exception $e) {
+            return $value;
+        }
     }
 }
