@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Diaclone\Transformer;
 
 use Diaclone\Resource\ResourceInterface;
+use Exception;
 
 class IntegerTransformer extends AbstractTransformer
 {
@@ -14,6 +15,11 @@ class IntegerTransformer extends AbstractTransformer
 
     public function untransform(ResourceInterface $resource)
     {
-        return $resource->getData();
+        try {
+            return (int)$resource->getData();
+
+        } catch (Exception $exception) {
+            return $resource->getData();
+        }
     }
 }
