@@ -1,6 +1,9 @@
 <?php
 declare(strict_types = 1);
 
+namespace Test\Unit;
+
+use UnitTester;
 use Diaclone\Resource\Item;
 use Diaclone\TransformService;
 use Test\Unit\Support\Entities\Credential;
@@ -39,7 +42,8 @@ class TransformNullCest
             'age'        => 42,
             'pigLatin'   => 'Ymay amenay isyay Illbay',
             'occupation' => [
-                'name' => 'Piano Man',
+                'name'      => 'Piano Man',
+                'startDate' => '2017-01-01 10:10:10',
             ],
             'friends'    => [
                 [
@@ -47,7 +51,8 @@ class TransformNullCest
                     'age'        => 42,
                     'pigLatin'   => 'Ymay amenay isyay Aulpay',
                     'occupation' => [
-                        'name' => 'Real estate novelist',
+                        'name'      => 'Real estate novelist',
+                        'startDate' => '2017-01-01 10:10:10',
                     ],
                     'friends'    => [],
                 ],
@@ -56,7 +61,8 @@ class TransformNullCest
                     'age'        => 42,
                     'pigLatin'   => 'Ymay amenay isyay Ohnjay',
                     'occupation' => [
-                        'name' => 'Bartender',
+                        'name'      => 'Bartender',
+                        'startDate' => '2017-01-01 10:10:10',
                     ],
                     'friends'    => [],
                 ],

@@ -9,13 +9,13 @@ use Diaclone\Transformer\StringTransformer;
 
 class CredentialInputTransformer extends AbstractTransformer
 {
-    protected static $transformers = [
-        'UserName' => StringTransformer::class,
-        'Password' => OutputOnlyStringTransformer::class,
-    ];
-
     protected static $mappedProperties = [
         'UserName' => 'username',
         'Password' => 'password',
+    ];
+
+    protected static $transformers = [
+        'UserName' => StringTransformer::class,
+        'Password' => OutputOnlyStringTransformer::class,
     ];
 }

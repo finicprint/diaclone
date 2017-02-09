@@ -9,10 +9,6 @@ use Diaclone\Transformer\IntegerTransformer;
 
 class PersonTransformer extends AbstractTransformer
 {
-    protected static $dataTypes = [
-        'my_friends' => Collection::class,
-    ];
-
     protected static $mappedProperties = [
         'name'       => 'name',
         'age'        => 'age',
@@ -26,5 +22,9 @@ class PersonTransformer extends AbstractTransformer
         'my_job'     => OccupationTransformer::class,
         'my_friends' => PersonTransformer::class,
         'pigLatin'   => PigLatinTransformer::class,
+    ];
+
+    protected static $dataTypes = [
+        'my_friends' => Collection::class,
     ];
 }

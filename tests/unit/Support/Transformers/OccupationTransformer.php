@@ -8,11 +8,12 @@ use Diaclone\Transformer\StringTransformer;
 
 class OccupationTransformer extends AbstractTransformer
 {
-    protected static $transformers = [
-        'name' => StringTransformer::class,
+    protected static $mappedProperties = [
+        'name'       => 'name',
+        'start_date' => 'startDate',
     ];
 
-    protected static $mappedProperties = [
-        'name' => 'name',
+    protected static $transformers = [
+        'name' => StringTransformer::class,
     ];
 }

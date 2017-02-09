@@ -3,66 +3,84 @@ declare(strict_types = 1);
 
 namespace Diaclone\Resource;
 
-class FieldMap implements FieldMapInterface
+class FieldMap
 {
-    private $partials;
-    private $wildcard;
+    /** @var string|array */
+    private $fields;
 
     /**
      * FieldMap constructor.
      *
-     * @param $partials
-     * @param $wildcard
+     * @param $fields
      */
-    public function __construct($partials = [], $wildcard = false)
+    public function __construct($fields = '*')
     {
-        if (is_string($partials)) {
-            if ($partials === '*') {
-                $partials = [];
-                $wildcard = true;
-            } else {
-                $partials = [$partials];
-            }
-        }
+        $this->parse($fields);
+    }
 
-        $this->partials = $partials;
-        $this->wildcard = $wildcard;
+    private function parse($fields)
+    {
+        if ($fields === '*' || $fields === null) {
+            $this->fields = '*';
+        } elseif (is_array($fields)) {
+            // reset fields
+            $this->fields = [];
+
+            if ($this->array_is_assoc($fields)) {
+                // array of field => value
+                foreach ($fields as $key => $value) {
+                    $this->fields[$key] = $this->toFieldMap($value);
+                }
+            } else {
+                // array of fields
+                foreach ($fields as $value) {
+                    $this->fields[$value] = new FieldMap();
+                }
+            }
+
+        } else {
+            $this->fields = [$this->toFieldMap($fields)];
+        }
     }
 
     /**
      * @return bool
      */
-    public function isWildcard()
+    public function isWildcard(): bool
     {
-        return boolval($this->wildcard);
+        return $this->fields === '*';
     }
 
     /**
      * @return array
      */
-    public function getPartials()
+    public function getFields()
     {
-        return $this->partials;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPartial($partial)
-    {
-        return (isset($this->partials[$partial])) ? $this->partials[$partial] : null;
+        return $this->fields;
     }
 
     /**
      * @param $field
+     * @return string
+     */
+    public function getField($field)
+    {
+        if ($this->fields === '*') {
+            return new FieldMap();
+        }
+
+        return $this->fields[$field] ?? null;
+    }
+
+    /**
+     * @param $field
+     * @param $value
      *
      * @return mixed
      */
-    public function addPartial($field)
+    public function addField($field, $value = '*')
     {
-        if (! $this->hasPartial($field)) {
-            $this->partials[] = $field;
-        }
+        return $this->fields[$field] = $this->toFieldMap($value);
     }
 
     /**
@@ -70,42 +88,64 @@ class FieldMap implements FieldMapInterface
      *
      * @return array
      */
-    public function removePartial($field)
+    public function removeField($field)
     {
-        $this->partials = array_diff($this->partials, [$field]);
+        unset($this->fields[$field]);
     }
 
     /**
-     *  has partial
+     * has field
      *
-     * @param $partial
+     * @param $field
      *
      * @return bool
      */
-    public function hasPartial($partial)
+    public function hasField($field): bool
     {
-        return $this->isWildcard() || in_array($partial, $this->getPartials());
+        return $this->isWildcard() || in_array($field, $this->getFieldsList());
     }
 
     /**
-     *  Check if partial map is empty
+     *  Check if field map is empty
      *
      * @return bool
      */
-    public function isEmpty()
+    public function isEmpty(): bool
     {
-        return (empty($this->getPartials()) && ! boolval($this->isWildcard()));
+        return (empty($this->getFields()) && ! $this->isWildcard());
     }
 
     /**
-     * @param boolean $wildcard
+     * Get names of all fields (top-level)
      *
-     * @return $this
+     * @return array|string
      */
-    public function setWildcard($wildcard)
+    public function getFieldsList()
     {
-        $this->wildcard = $wildcard;
+        return $this->isWildcard() ? '*' : array_keys($this->getFields());
+    }
 
-        return $this;
+    /**
+     * src: http://stackoverflow.com/a/4254008
+     *
+     * @param array $array
+     *
+     * @return bool
+     */
+    private function array_is_assoc(array $array): bool
+    {
+        return count(array_filter(array_keys($array), 'is_string')) > 0;
+    }
+
+    /**
+     * Wrap value inside a field map
+     *
+     * @param $value
+     *
+     * @return FieldMap
+     */
+    private function toFieldMap($value): FieldMap
+    {
+        return $value instanceof FieldMap ? $value : new FieldMap($value);
     }
 }

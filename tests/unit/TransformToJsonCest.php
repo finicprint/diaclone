@@ -3,12 +3,12 @@ declare(strict_types = 1);
 
 namespace Test\Unit;
 
+use UnitTester;
 use Diaclone\Resource\Collection;
 use Diaclone\Serializer\SimpleJsonSerializer;
 use Diaclone\TransformService;
 use Test\Unit\Support\Entities\Person;
 use Test\Unit\Support\Transformers\PersonTransformer;
-use UnitTester;
 
 class TransformToJsonCest
 {
@@ -21,7 +21,8 @@ class TransformToJsonCest
             new Person('Elizabeth', 'Waitress'),
         ];
 
-        $output = (new TransformService(new SimpleJsonSerializer()))->transform(new Person('Bill', 'Piano Man', $friends), new PersonTransformer(), 'person');
+        $output = (new TransformService(new SimpleJsonSerializer()))->transform(new Person('Bill', 'Piano Man',
+            $friends), new PersonTransformer(), 'person');
 
         $expected = [
             'person' => [
@@ -29,7 +30,8 @@ class TransformToJsonCest
                 'age'        => 42,
                 'pigLatin'   => 'Ymay amenay isyay Illbay',
                 'occupation' => [
-                    'name' => 'Piano Man',
+                    'name'      => 'Piano Man',
+                    'startDate' => '2017-01-01 10:10:10',
                 ],
                 'friends'    => [
                     [
@@ -37,7 +39,8 @@ class TransformToJsonCest
                         'age'        => 42,
                         'pigLatin'   => 'Ymay amenay isyay Aulpay',
                         'occupation' => [
-                            'name' => 'Real estate novelist',
+                            'name'      => 'Real estate novelist',
+                            'startDate' => '2017-01-01 10:10:10',
                         ],
                         'friends'    => [],
                     ],
@@ -46,7 +49,8 @@ class TransformToJsonCest
                         'age'        => 42,
                         'pigLatin'   => 'Ymay amenay isyay Ohnjay',
                         'occupation' => [
-                            'name' => 'Bartender',
+                            'name'      => 'Bartender',
+                            'startDate' => '2017-01-01 10:10:10',
                         ],
                         'friends'    => [],
                     ],
@@ -55,7 +59,8 @@ class TransformToJsonCest
                         'age'        => 42,
                         'pigLatin'   => 'Ymay amenay isyay Avyday',
                         'occupation' => [
-                            'name' => 'Sailor',
+                            'name'      => 'Sailor',
+                            'startDate' => '2017-01-01 10:10:10',
                         ],
                         'friends'    => [],
                     ],
@@ -64,7 +69,8 @@ class TransformToJsonCest
                         'age'        => 42,
                         'pigLatin'   => 'Ymay amenay isyay Elizabethyay',
                         'occupation' => [
-                            'name' => 'Waitress',
+                            'name'      => 'Waitress',
+                            'startDate' => '2017-01-01 10:10:10',
                         ],
                         'friends'    => [],
                     ],
@@ -81,35 +87,40 @@ class TransformToJsonCest
             'name'       => 'My name is Bill',
             'age'        => 42,
             'occupation' => [
-                'name' => 'Piano Man',
+                'name'      => 'Piano Man',
+                'startDate' => '2017-01-01 10:10:10',
             ],
             'friends'    => [
                 [
                     'name'       => 'My name is Paul',
                     'age'        => 42,
                     'occupation' => [
-                        'name' => 'Real estate novelist',
+                        'name'      => 'Real estate novelist',
+                        'startDate' => '2017-01-01 10:10:10',
                     ],
                 ],
                 [
                     'name'       => 'My name is John',
                     'age'        => 42,
                     'occupation' => [
-                        'name' => 'Bartender',
+                        'name'      => 'Bartender',
+                        'startDate' => '2017-01-01 10:10:10',
                     ],
                 ],
                 [
                     'name'       => 'My name is Davy',
                     'age'        => 42,
                     'occupation' => [
-                        'name' => 'Sailor',
+                        'name'      => 'Sailor',
+                        'startDate' => '2017-01-01 10:10:10',
                     ],
                 ],
                 [
                     'name'       => 'My name is Elizabeth',
                     'age'        => 42,
                     'occupation' => [
-                        'name' => 'Waitress',
+                        'name'      => 'Waitress',
+                        'startDate' => '2017-01-01 10:10:10',
                     ],
                 ],
             ],
@@ -121,35 +132,40 @@ class TransformToJsonCest
             'name'       => 'My name is Bill',
             'age'        => 42,
             'my_job'     => [
-                'name' => 'Piano Man',
+                'name'       => 'Piano Man',
+                'start_date' => '2017-01-01 10:10:10',
             ],
             'my_friends' => [
                 [
                     'name'   => 'My name is Paul',
                     'age'    => 42,
                     'my_job' => [
-                        'name' => 'Real estate novelist',
+                        'name'       => 'Real estate novelist',
+                        'start_date' => '2017-01-01 10:10:10',
                     ],
                 ],
                 [
                     'name'   => 'My name is John',
                     'age'    => 42,
                     'my_job' => [
-                        'name' => 'Bartender',
+                        'name'       => 'Bartender',
+                        'start_date' => '2017-01-01 10:10:10',
                     ],
                 ],
                 [
                     'name'   => 'My name is Davy',
                     'age'    => 42,
                     'my_job' => [
-                        'name' => 'Sailor',
+                        'name'       => 'Sailor',
+                        'start_date' => '2017-01-01 10:10:10',
                     ],
                 ],
                 [
                     'name'   => 'My name is Elizabeth',
                     'age'    => 42,
                     'my_job' => [
-                        'name' => 'Waitress',
+                        'name'       => 'Waitress',
+                        'start_date' => '2017-01-01 10:10:10',
                     ],
                 ],
             ],
@@ -159,14 +175,16 @@ class TransformToJsonCest
 
     public function testTransformationWithoutKey(UnitTester $I)
     {
-        $output = (new TransformService(new SimpleJsonSerializer()))->transform(new Person('Bill', 'Piano Man'), new PersonTransformer());
+        $output = (new TransformService(new SimpleJsonSerializer()))->transform(new Person('Bill', 'Piano Man'),
+            new PersonTransformer());
 
         $expected = [
             'name'       => 'My name is Bill',
             'age'        => 42,
             'pigLatin'   => 'Ymay amenay isyay Illbay',
             'occupation' => [
-                'name' => 'Piano Man',
+                'name'      => 'Piano Man',
+                'startDate' => '2017-01-01 10:10:10',
             ],
             'friends'    => [],
         ];
@@ -183,7 +201,8 @@ class TransformToJsonCest
             new Person('Elizabeth', 'Waitress'),
         ];
 
-        $output = (new TransformService(new SimpleJsonSerializer()))->transform($friends, new PersonTransformer(), 'people', '*', Collection::class);
+        $output = (new TransformService(new SimpleJsonSerializer()))->transform($friends, new PersonTransformer(),
+            'people', '*', Collection::class);
 
         $expected = [
             'people' => [
@@ -192,7 +211,8 @@ class TransformToJsonCest
                     'age'        => 42,
                     'pigLatin'   => 'Ymay amenay isyay Aulpay',
                     'occupation' => [
-                        'name' => 'Real estate novelist',
+                        'name'      => 'Real estate novelist',
+                        'startDate' => '2017-01-01 10:10:10',
                     ],
                     'friends'    => [],
                 ],
@@ -201,7 +221,8 @@ class TransformToJsonCest
                     'age'        => 42,
                     'pigLatin'   => 'Ymay amenay isyay Ohnjay',
                     'occupation' => [
-                        'name' => 'Bartender',
+                        'name'      => 'Bartender',
+                        'startDate' => '2017-01-01 10:10:10',
                     ],
                     'friends'    => [],
                 ],
@@ -210,7 +231,8 @@ class TransformToJsonCest
                     'age'        => 42,
                     'pigLatin'   => 'Ymay amenay isyay Avyday',
                     'occupation' => [
-                        'name' => 'Sailor',
+                        'name'      => 'Sailor',
+                        'startDate' => '2017-01-01 10:10:10',
                     ],
                     'friends'    => [],
                 ],
@@ -219,7 +241,8 @@ class TransformToJsonCest
                     'age'        => 42,
                     'pigLatin'   => 'Ymay amenay isyay Elizabethyay',
                     'occupation' => [
-                        'name' => 'Waitress',
+                        'name'      => 'Waitress',
+                        'startDate' => '2017-01-01 10:10:10',
                     ],
                     'friends'    => [],
                 ],
@@ -238,7 +261,8 @@ class TransformToJsonCest
             new Person('Elizabeth', 'Waitress'),
         ];
 
-        $output = (new TransformService(new SimpleJsonSerializer()))->transform($friends, new PersonTransformer(), '', '*', Collection::class);
+        $output = (new TransformService(new SimpleJsonSerializer()))->transform($friends, new PersonTransformer(), '',
+            '*', Collection::class);
 
         $expected = [
             [
@@ -246,7 +270,8 @@ class TransformToJsonCest
                 'age'        => 42,
                 'pigLatin'   => 'Ymay amenay isyay Aulpay',
                 'occupation' => [
-                    'name' => 'Real estate novelist',
+                    'name'      => 'Real estate novelist',
+                    'startDate' => '2017-01-01 10:10:10',
                 ],
                 'friends'    => [],
             ],
@@ -255,7 +280,8 @@ class TransformToJsonCest
                 'age'        => 42,
                 'pigLatin'   => 'Ymay amenay isyay Ohnjay',
                 'occupation' => [
-                    'name' => 'Bartender',
+                    'name'      => 'Bartender',
+                    'startDate' => '2017-01-01 10:10:10',
                 ],
                 'friends'    => [],
             ],
@@ -264,7 +290,8 @@ class TransformToJsonCest
                 'age'        => 42,
                 'pigLatin'   => 'Ymay amenay isyay Avyday',
                 'occupation' => [
-                    'name' => 'Sailor',
+                    'name'      => 'Sailor',
+                    'startDate' => '2017-01-01 10:10:10',
                 ],
                 'friends'    => [],
             ],
@@ -273,7 +300,8 @@ class TransformToJsonCest
                 'age'        => 42,
                 'pigLatin'   => 'Ymay amenay isyay Elizabethyay',
                 'occupation' => [
-                    'name' => 'Waitress',
+                    'name'      => 'Waitress',
+                    'startDate' => '2017-01-01 10:10:10',
                 ],
                 'friends'    => [],
             ],

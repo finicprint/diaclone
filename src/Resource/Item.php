@@ -25,27 +25,18 @@ class Item extends AbstractResource
             return null;
         }
 
-        if ($this->fieldMap->isWildcard()) {
-            $includeAll = true;
-            $fieldMap = array_keys($mappedProperties);
-        } else {
-            // TODO: include partials
-            $includeAll = true;
-            $fieldMap = $this->fieldMap->getPartials();
-            if ($diff = array_diff($fieldMap, array_keys($mappedProperties))) {
-                throw new UnrecognizedInputException($diff);
-            }
+        $fieldMap = $this->fieldMap->isWildcard()
+            ? array_keys($mappedProperties)
+            : $this->fieldMap->getFieldsList();
+
+        // validate fields list
+        if ($diff = array_diff($fieldMap, array_keys($mappedProperties))) {
+            throw new UnrecognizedInputException($diff);
         }
 
         foreach ($fieldMap as $property) {
-            // todo: exception if value isn't mapped
-
-            if ($includeAll) {
-                $propertiesToTransform = '*';
-            }
-
             $dataTypeClass = $transformer->getDataType($property);
-            $dataType = new $dataTypeClass($data, $property, $propertiesToTransform);
+            $dataType = new $dataTypeClass($data, $property, $this->fieldMap->getField($property));
 
             $propertyTransformerClass = $transformer->getPropertyTransformer($property);
             /** @var AbstractTransformer $propertyTransformer */
