@@ -56,6 +56,10 @@ class Item extends AbstractResource
         $malformedFields = [];
         $response = [];
 
+        if ($this->getData() === null) {
+            return null;
+        }
+
         $mapping = array_flip($transformer->getMappedProperties());
 
         foreach ($this->getData() as $incomingProperty => $data) {
