@@ -25,7 +25,7 @@ class StringTransformer extends AbstractTransformer
     public function untransform(ResourceInterface $resource)
     {
         try {
-            return (string)$resource->getData();
+            return html_entity_decode((string)$resource->getData());
 
         } catch (Exception $exception) {
             throw new MalformedInputException([$resource->getPropertyName(), 'String expected']);
