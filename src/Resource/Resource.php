@@ -11,9 +11,9 @@ abstract class Resource
     {
         //TODO: capture and throught exceptions
         if (empty($resource_type))
-            return ResourceRegistered::$resourcesCatalog['default'];
+            return new ResourceRegistered::$resourcesCatalog['default']($data);
 
-        return ResourceRegistered::$resourcesCatalog[$resource_type];
+        return new ResourceRegistered::$resourcesCatalog[$resource_type]($data);
     }
 
     /**
