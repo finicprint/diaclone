@@ -4,23 +4,23 @@ declare(strict_types = 1);
 namespace Diaclone\Resource;
 
 
-abstract class Resource
+abstract class Conector
 {
 
     public static function getResource(array $data, String $resource_type)
     {
-        //TODO: capture and throught exceptions
         if (empty($resource_type))
-            return new ResourceRegistered::$resourcesCatalog['default']($data);
+            return new ConectorRegistered::$conectorsCatalog['default']($data);
 
-        return new ResourceRegistered::$resourcesCatalog[$resource_type]($data);
+        return new ConectorRegistered::$conectorsCatalog[$resource_type]($data);
     }
 
     /**
-     *
+     * Serialize from array to
      */
     protected function serialize($data): \stdClass
     {
+
         return $data;
     }
 

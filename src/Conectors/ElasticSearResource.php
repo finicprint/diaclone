@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Diaclone\Resource;
 
 
-class ElasticSearResource extends Resource
+class ElasticSearConector extends Conector
 {
     private $data;
     private $instance;
