@@ -2,9 +2,9 @@
 declare(strict_types = 1);
 
 namespace Diaclone\Conector;
+use Elasticsearch\ClientBuilder;
 
-
-class ElasticSearConector extends Conector
+class ElasticSearchConnector extends Connector
 {
     private $data;
     private $instance;
@@ -13,6 +13,9 @@ class ElasticSearConector extends Conector
     public function __construct($data)
     {
         $this->data = $data;
+        if (empty($this->instance)) {
+            $this->instance = ClientBuilder::create()->build();
+        }
     }
 
     /**
@@ -37,11 +40,11 @@ class ElasticSearConector extends Conector
 
     public function getData()
     {
-
+        //querying to Elasticsearch by using $this->instance
     }
 
     public function setData($data)
     {
-
+        //querying to Elasticsearch by using $this->instance
     }
 }

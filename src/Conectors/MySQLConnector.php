@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Diaclone\Conector;
 
 
-class MySQLConector extends Conector
+class MySQLConnector extends Connector
 {
 
     private $data;
@@ -45,11 +45,13 @@ class MySQLConector extends Conector
 
     public function getData()
     {
-
+        //WIP
+        //querying to mysql by using $this->instance
     }
 
     public function setData($data)
     {
-
+        //WIP
+        //querying to mysql by using $this->instance
     }
 }
