@@ -1,5 +1,5 @@
 <?php
-namespace Diaclone\Resource;
+namespace Diaclone\Conector;
 
 class ConectorRegistered
 {

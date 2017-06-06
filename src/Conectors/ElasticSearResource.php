@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace Diaclone\Resource;
+namespace Diaclone\Conector;
 
 
 class ElasticSearConector extends Conector
