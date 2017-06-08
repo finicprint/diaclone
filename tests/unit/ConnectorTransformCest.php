@@ -26,8 +26,9 @@ class ConnectorTransformCest
         $objectConnector = new ObjectConnector(new Person('Bill', 'Piano Man', $friends));
         $arrayConnector = new ArrayConnector();
 
-        $output = (new ConnectorTransformService())->transform($objectConnector, $arrayConnector,
+        (new ConnectorTransformService())->transform($objectConnector, $arrayConnector,
             new PersonTransformer(), 'person');
+        $output = $arrayConnector->getData();
         $expected = [
             'person' => [
                 'name'       => 'My name is Bill',
