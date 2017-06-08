@@ -7,7 +7,8 @@
     "license": "MIT",
     "require": {
         "php": ">=7.0.0",
-        "nesbot/carbon": "1.21.0"
+        "nesbot/carbon": "1.21.0",
+        "elasticsearch/elasticsearch": "dev-master"
     },
     "require-dev": {
         "codeception/codeception": "^2.2"
