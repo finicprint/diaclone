@@ -1,25 +1,20 @@
 <?php
 declare(strict_types = 1);
 
-namespace Diaclone\Conector;
+namespace Diaclone\Connector;
+use Elasticsearch\ClientBuilder;
 
-
-class MySQLConector extends Conector
+class ElasticSearchConnector extends Connector
 {
-
     private $data;
     private $instance;
+    private $config;
 
-    public function __construct(array $data)
+    public function __construct($data)
     {
         $this->data = $data;
         if (empty($this->instance)) {
-            $this->instance = new \mysqli(
-                getenv('MYSQL_HOST'),
-                getenv('MYSQL_USER'),
-                getenv('MYSQL_PASSWORD'),
-                getenv('MYSQL_DBNAME')
-            );
+            $this->instance = ClientBuilder::create()->build();
         }
     }
 
@@ -45,11 +40,11 @@ class MySQLConector extends Conector
 
     public function getData()
     {
-
+        //querying to Elasticsearch by using $this->instance
     }
 
     public function setData($data)
     {
-
+        //querying to Elasticsearch by using $this->instance
     }
 }

@@ -1,18 +1,26 @@
 <?php
 declare(strict_types = 1);
 
-namespace Diaclone\Conector;
+namespace Diaclone\Connector;
 
 
-class ElasticSearConector extends Conector
+class MySQLConnector extends Connector
 {
+
     private $data;
     private $instance;
-    private $config;
 
-    public function __construct($data)
+    public function __construct(array $data)
     {
         $this->data = $data;
+        if (empty($this->instance)) {
+            $this->instance = new \mysqli(
+                getenv('MYSQL_HOST'),
+                getenv('MYSQL_USER'),
+                getenv('MYSQL_PASSWORD'),
+                getenv('MYSQL_DBNAME')
+            );
+        }
     }
 
     /**
@@ -37,11 +45,13 @@ class ElasticSearConector extends Conector
 
     public function getData()
     {
-
+        //WIP
+        //querying to mysql by using $this->instance
     }
 
     public function setData($data)
     {
-
+        //WIP
+        //querying to mysql by using $this->instance
     }
 }
