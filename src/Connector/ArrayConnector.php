@@ -18,29 +18,27 @@ class ArrayConnector extends Connector
     }
 
     /**
-     * each resource implements their own serialize according the cursor or driver
-     * or reuse the parent one
+     * @param $data
+     * @return mixed
      */
-    protected function serialize($data)
+    public function serialize($data)
     {
         $data = parent::serialize($data);
         return $data;
     }
 
     /**
-     * each resource implements their own deserialize according the cursor or driver
-     * or reuse the parent one
+     * @param $key
+     * @param $dataTransformed
+     * @param string $type
      */
-    protected function deserialize($data)
+    public function deserialize($key, $dataTransformed, $type = 'item')
     {
-        $data = parent::deserialize($data);
-        return $data;
-    }
-
-    public function dataFromTransformer($key, $dataTransformed)
-    {
-        $this->data = $this->serializer->item($key, $dataTransformed);
-        return $this;
+        if ($type == 'item') {
+            $this->data = $this->serializer->item($key, $dataTransformed);
+        } elseif($type == 'collection') {
+            $this->data = $this->serializer->collection($key, $dataTransformed);
+        }
     }
 
     public function getData()
@@ -50,6 +48,6 @@ class ArrayConnector extends Connector
 
     public function setData($data)
     {
-
+        $this->data = $data;
     }
 }

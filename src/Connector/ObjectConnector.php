@@ -13,29 +13,21 @@ class ObjectConnector extends Connector
     }
 
     /**
-     * each resource implements their own serialize according the cursor or driver
-     * or reuse the parent one
+     * @param $data
+     * @return mixed
      */
-    protected function serialize($data)
+    public function serialize($data)
     {
-        $data = parent::serialize($data);
         return $data;
     }
 
     /**
-     * each resource implements their own deserialize according the cursor or driver
-     * or reuse the parent one
+     * @param $data
+     * @return mixed
      */
-    protected function deserialize($data)
+    public function deserialize($data)
     {
-        $data = parent::deserialize($data);
         return $data;
-    }
-
-    protected function dataForTransformer($resource)
-    {
-        $this->resource = $resource;
-
     }
 
     public function getData()

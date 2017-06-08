@@ -29,9 +29,12 @@ class ConnectorTransformService
         $resource = new $resourceClass($connectorIn->getData(), '', $fieldMap);
         $transformed = $transformer->transform($resource);
 
-        $serialized = $connectorOut->dataFromTransformer($key, $transformed)->getData();
+        if ($resource instanceof Collection) {
+            $connectorOut->deserialize($key, $transformed, 'collection');
+        } else {
+            $connectorOut->deserialize($key, $transformed);
+        }
 
-        return $serialized;
     }
 
     public function untransform($data, AbstractTransformer $transformer, $resourceClass = Item::class): array
