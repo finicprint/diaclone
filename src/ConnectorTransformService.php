@@ -29,12 +29,7 @@ class ConnectorTransformService
         $resource = new $resourceClass($connectorIn->getData(), '', $fieldMap);
         $transformed = $transformer->transform($resource);
 
-        if ($resource instanceof Collection) {
-            $serialized = $this->serializer->collection($key, $transformed);
-
-        } else {
-            $serialized = $this->serializer->item($key, $transformed);
-        }
+        $serialized = $connectorOut->dataFromTransformer($key, $transformed)->getData();
 
         return $serialized;
     }

@@ -6,8 +6,6 @@ namespace Diaclone\Connector;
 class ObjectConnector extends Connector
 {
     private $data;
-    private $instance;
-    private $config;
 
     public function __construct($data)
     {
@@ -32,6 +30,12 @@ class ObjectConnector extends Connector
     {
         $data = parent::deserialize($data);
         return $data;
+    }
+
+    protected function dataForTransformer($resource)
+    {
+        $this->resource = $resource;
+
     }
 
     public function getData()

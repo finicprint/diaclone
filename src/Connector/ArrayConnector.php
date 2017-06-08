@@ -4,16 +4,17 @@ declare(strict_types = 1);
 namespace Diaclone\Connector;
 
 use Diaclone\Resource\AbstractResource;
+use Diaclone\Serializer\ArraySerializer;
+use Diaclone\Serializer\SerializerAbstract;
 
 class ArrayConnector extends Connector
 {
     private $data;
-    private $resource;
+    private $serializer;
 
-    public function __construct(array $data = [], AbstractResource $resource = null)
+    public function __construct(SerializerAbstract $serializer = null)
     {
-        $this->data = $data;
-        $this->resource = $resource;
+        $this->serializer = $serializer ?: new ArraySerializer();
     }
 
     /**
@@ -36,13 +37,19 @@ class ArrayConnector extends Connector
         return $data;
     }
 
+    public function dataFromTransformer($key, $dataTransformed)
+    {
+        $this->data = $this->serializer->item($key, $dataTransformed);
+        return $this;
+    }
+
     public function getData()
     {
-        //querying to Elasticsearch by using $this->instance
+        return $this->data;
     }
 
     public function setData($data)
     {
-        //querying to Elasticsearch by using $this->instance
+
     }
 }
