@@ -1,50 +1,56 @@
 <?php
+require '../../vendor/autoload.php';
+
 declare(strict_types = 1);
 
 namespace Diaclone\Connector;
 use Elasticsearch\ClientBuilder;
+use Diaclone\Serializer\SerializerAbstract;
 
 class ElasticSearchConnector extends Connector
 {
     private $data;
     private $instance;
-    private $config;
+    private $elastichsearch_params;
 
-    public function __construct($data)
+    public function __construct($data, array $params = [], array $hosts = [])
     {
         $this->data = $data;
+        $this->elastichsearch_params = $params;
         if (empty($this->instance)) {
-            $this->instance = ClientBuilder::create()->build();
+            if (!empty($hosts))
+                $this->instance = ClientBuilder::create()->setHosts($hosts)->build();
+            else
+                $this->instance = ClientBuilder::create()->build();
         }
     }
 
     /**
-     * each resource implements their own serialize according the cursor or driver
-     * or reuse the parent one
+     * @param SerializerAbstract $serializer
+     * @return $this
      */
-    protected function serialize($data)
+    public function setSerializer(SerializerAbstract $serializer)
     {
-        $data = parent::serialize($data);
-        return $data;
+        $this->serializer = $serializer;
+        return $this;
     }
 
     /**
-     * each resource implements their own deserialize according the cursor or driver
-     * or reuse the parent one
+     * @return SerializerAbstract
      */
-    protected function deserialize($data)
+    public function getSerializer(): SerializerAbstract
     {
-        $data = parent::deserialize($data);
-        return $data;
+        return $this->serializer;
     }
 
     public function getData()
     {
-        //querying to Elasticsearch by using $this->instance
+        return $this->data;
     }
 
     public function setData($data)
     {
-        //querying to Elasticsearch by using $this->instance
+        $this->data = $data;
+        return $this;
     }
 }
