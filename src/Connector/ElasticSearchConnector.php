@@ -28,6 +28,8 @@ class ElasticSearchConnector extends Connector
         }
     }
 
+
+
     /**
      * @param SerializerAbstract $serializer
      * @return $this
@@ -46,32 +48,61 @@ class ElasticSearchConnector extends Connector
         return $this->serializer;
     }
 
+    /**
+     * @return mixed
+     */
     public function getData()
     {
         return $this->data;
     }
 
+    /**
+     * @param $data
+     * @return $this
+     */
     public function setData($data)
     {
         $this->data = $data;
         return $this;
     }
 
+    /**
+     * @return \Elasticsearch\Client
+     */
     public function getInstance()
     {
         return $this->instance;
     }
 
-    public function createDocuement(int $id, array $data)
+    /**
+     * ```
+     * $params = [
+     *   'index' => 'my_index',
+     *   'type' => 'my_type',
+     *   'id' => 'my_id',
+     *   'body' => ['testField' => 'abc']
+     *   ];
+     *
+     * ```
+     * @param string $id
+     * @param array $data
+     * @return array
+     */
+    public function createDocument(string $id, array $data)
     {
         $params = $this->default_params;
         $params['id'] = $id;
         $params['body'] = $data;
-        //TODO: apply desearilize
-        return $this->instance->index($params);
+        $response = $this->instance->index($params);
+        return $response;
     }
 
-    public function getDocument(int $id)
+    /**
+     *
+     * @param string $id
+     * @return array
+     */
+    public function getDocument(string $id)
     {
         $params = $this->default_params;
         $params['id'] = $id;
@@ -81,11 +112,20 @@ class ElasticSearchConnector extends Connector
 
     }
 
-    public function updateDocument(int $id, array $data)
+    /**
+     * @param string $id
+     * @param array $data
+     * @return array
+     */
+    public function updateDocument(string $id, array $data)
     {
-        return $this->createDocuement($id, $data);
+        return $this->createDocument($id, $data);
     }
 
+    /**
+     * @param array $query
+     * @return array
+     */
     public function searchDocument(array $query)
     {
         $params = $this->default_params;
@@ -94,7 +134,11 @@ class ElasticSearchConnector extends Connector
         return $response;
     }
 
-    public function deleteDocument(int $id)
+    /**
+     * @param string $id
+     * @return array
+     */
+    public function deleteDocument(string $id)
     {
         $params = $this->default_params;
         $params['id'] = $id;
@@ -102,6 +146,11 @@ class ElasticSearchConnector extends Connector
         return $response;
     }
 
+    /**
+     * @param string $index
+     * @param array $body
+     * @return array
+     */
     public function createIndex(string $index, array $body)
     {
         $params = [
@@ -114,6 +163,10 @@ class ElasticSearchConnector extends Connector
 
     }
 
+    /**
+     * @param string $id
+     * @return array
+     */
     public function deleteIndex(string $id)
     {
         $params = [
