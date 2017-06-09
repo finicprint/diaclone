@@ -12,19 +12,27 @@ class ArrayConnector extends Connector
     private $data;
     private $serializer;
 
-    public function __construct(SerializerAbstract $serializer = null)
+    public function __construct(array $data = [])
     {
-        $this->serializer = $serializer ?: new ArraySerializer();
+        $this->data = $data;
     }
 
     /**
-     * @param $data
-     * @return mixed
+     * @param SerializerAbstract $serializer
+     * @return $this
      */
-    public function serialize($data)
+    public function setSerializer(SerializerAbstract $serializer)
     {
-        $data = parent::serialize($data);
-        return $data;
+        $this->serializer = $serializer;
+        return $this;
+    }
+
+    /**
+     * @return SerializerAbstract
+     */
+    public function getSerializer(): SerializerAbstract
+    {
+        return $this->serializer;
     }
 
     /**

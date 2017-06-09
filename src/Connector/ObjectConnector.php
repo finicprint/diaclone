@@ -2,10 +2,12 @@
 declare(strict_types = 1);
 
 namespace Diaclone\Connector;
+use Diaclone\Serializer\SerializerAbstract;
 
 class ObjectConnector extends Connector
 {
     private $data;
+    private $serializer;
 
     public function __construct($data)
     {
@@ -13,21 +15,21 @@ class ObjectConnector extends Connector
     }
 
     /**
-     * @param $data
-     * @return mixed
+     * @param SerializerAbstract $serializer
+     * @return $this
      */
-    public function serialize($data)
+    public function setSerializer(SerializerAbstract $serializer)
     {
-        return $data;
+        $this->serializer = $serializer;
+        return $this;
     }
 
     /**
-     * @param $data
-     * @return mixed
+     * @return SerializerAbstract
      */
-    public function deserialize($data)
+    public function getSerializer(): SerializerAbstract
     {
-        return $data;
+        return $this->serializer;
     }
 
     public function getData()

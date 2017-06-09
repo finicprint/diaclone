@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 
 namespace Diaclone\Connector;
+use Diaclone\Serializer\SerializerAbstract;
 
 
 abstract class Connector
@@ -20,6 +21,10 @@ abstract class Connector
         }
         return new ConnectorRegistered::$connectorsCatalog[$connector_type]($data);
     }
+
+    abstract public function setSerializer(SerializerAbstract $serializer);
+
+    abstract public function getSerializer(): SerializerAbstract;
 
     /**
      * @return mixed

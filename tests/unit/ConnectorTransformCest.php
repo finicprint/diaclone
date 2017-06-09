@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Test\Unit;
 
 use UnitTester;
+use Diaclone\Serializer\ArraySerializer;
 use Diaclone\Connector\ObjectConnector;
 use Diaclone\Connector\ArrayConnector;
 use Diaclone\Resource\Collection;
@@ -25,6 +26,7 @@ class ConnectorTransformCest
         ];
         $objectConnector = new ObjectConnector(new Person('Bill', 'Piano Man', $friends));
         $arrayConnector = new ArrayConnector();
+        $arrayConnector->setSerializer(new ArraySerializer());
 
         (new ConnectorTransformService())->transform($objectConnector, $arrayConnector,
             new PersonTransformer(), 'person');

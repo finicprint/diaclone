@@ -8,7 +8,7 @@
     "require": {
         "php": ">=7.0.0",
         "nesbot/carbon": "1.21.0",
-        "elasticsearch/elasticsearch": "dev-master"
+        "elasticsearch/elasticsearch": "^5.2"
     },
     "require-dev": {
         "codeception/codeception": "^2.2"
