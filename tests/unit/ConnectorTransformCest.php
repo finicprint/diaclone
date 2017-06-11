@@ -12,6 +12,8 @@ use Diaclone\Resource\FieldMap;
 use Diaclone\ConnectorTransformService;
 use Test\Unit\Support\Entities\Person;
 use Test\Unit\Support\Transformers\PersonTransformer;
+use Diaclone\Connector\ElasticSearchConnector;
+
 
 class ConnectorTransformCest
 {
@@ -183,6 +185,32 @@ class ConnectorTransformCest
 
         (new ConnectorTransformService())->transform($objectConnector, $arrayConnector, new PersonTransformer());
         $output = $arrayConnector->getData();
+
+        $expected = [
+            'name'       => 'My name is Bill',
+            'age'        => 42,
+            'pigLatin'   => 'Ymay amenay isyay Illbay',
+            'occupation' => [
+                'name'      => 'Piano Man',
+                'startDate' => '2017-01-01 10:10:10',
+            ],
+            'friends'    => [],
+        ];
+
+        $I->assertEquals($expected, $output);
+    }
+
+    public function testTransformationESConnector(UnitTester $I)
+    {
+        $objectConnector = new ObjectConnector(new Person('Bill', 'Piano Man'));
+        $ESConnector = new ElasticSearchConnector(["index" => 'people', "type" => 'test']);
+        $ESConnector->setSerializer(new ArraySerializer());
+
+        (new ConnectorTransformService())->transform($objectConnector, $ESConnector, new PersonTransformer());
+
+        $ESConnector->createDocument('0');
+        $document = $ESConnector->getDocument('0');
+        $output = $ESConnector->getData();
 
         $expected = [
             'name'       => 'My name is Bill',
