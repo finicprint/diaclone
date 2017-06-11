@@ -209,7 +209,7 @@ class ConnectorTransformCest
         (new ConnectorTransformService())->transform($objectConnector, $ESConnector, new PersonTransformer());
 
         $ESConnector->createDocument('0');
-        $document = $ESConnector->getDocument('0');
+        $ESConnector->getDocument('0');
         $output = $ESConnector->getData();
 
         $expected = [
