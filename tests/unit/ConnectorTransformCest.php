@@ -9,7 +9,6 @@ use Diaclone\Connector\ObjectConnector;
 use Diaclone\Connector\ArrayConnector;
 use Diaclone\Resource\Collection;
 use Diaclone\Resource\FieldMap;
-use Diaclone\TransformService;
 use Diaclone\ConnectorTransformService;
 use Test\Unit\Support\Entities\Person;
 use Test\Unit\Support\Transformers\PersonTransformer;
@@ -130,7 +129,7 @@ class ConnectorTransformCest
                 ],
             ],
         ];
-        $output = (new TransformService())->untransform($payload, new PersonTransformer());
+        $output = (new ConnectorTransformService())->untransform($payload, new PersonTransformer());
 
         $expected = [
             'name'       => 'My name is Bill',
@@ -178,7 +177,13 @@ class ConnectorTransformCest
 
     public function testTransformationWithoutKey(UnitTester $I)
     {
-        $output = (new TransformService())->transform(new Person('Bill', 'Piano Man'), new PersonTransformer());
+        $objectConnector = new ObjectConnector(new Person('Bill', 'Piano Man'));
+        $arrayConnector = new ArrayConnector();
+        $arrayConnector->setSerializer(new ArraySerializer());
+
+        (new ConnectorTransformService())->transform($objectConnector, $arrayConnector, new PersonTransformer());
+        $output = $arrayConnector->getData();
+
         $expected = [
             'name'       => 'My name is Bill',
             'age'        => 42,
@@ -201,8 +206,13 @@ class ConnectorTransformCest
             new Person('Davy', 'Sailor'),
             new Person('Elizabeth', 'Waitress'),
         ];
-        $output = (new TransformService())->transform($friends, new PersonTransformer(), 'people', '*',
-            Collection::class);
+        $objectConnector = new ObjectConnector($friends);
+        $arrayConnector = new ArrayConnector();
+        $arrayConnector->setSerializer(new ArraySerializer());
+
+        (new ConnectorTransformService())->transform($objectConnector, $arrayConnector, new PersonTransformer() , 'people', '*', Collection::class);
+        $output = $arrayConnector->getData();
+
         $expected = [
             'people' => [
                 [
@@ -258,8 +268,12 @@ class ConnectorTransformCest
             new Person('Davy', 'Sailor'),
             new Person('Elizabeth', 'Waitress'),
         ];
-        $output = (new TransformService())->transform($friends, new PersonTransformer(), '', '*',
-            Collection::class);
+        $objectConnector = new ObjectConnector($friends);
+        $arrayConnector = new ArrayConnector();
+        $arrayConnector->setSerializer(new ArraySerializer());
+
+        (new ConnectorTransformService())->transform($objectConnector, $arrayConnector, new PersonTransformer() , '', '*', Collection::class);
+        $output = $arrayConnector->getData();
         $expected = [
             [
                 'name'       => 'My name is Paul',
@@ -313,11 +327,14 @@ class ConnectorTransformCest
             new Person('Davy', 'Sailor'),
             new Person('Elizabeth', 'Waitress'),
         ];
-
+        $objectConnector = new ObjectConnector($friends);
+        $arrayConnector = new ArrayConnector();
+        $arrayConnector->setSerializer(new ArraySerializer());
         $fieldMap = new FieldMap(['name', 'my_job']);
 
-        $output = (new TransformService())->transform($friends, new PersonTransformer(), 'people', $fieldMap,
-            Collection::class);
+        (new ConnectorTransformService())->transform($objectConnector, $arrayConnector, new PersonTransformer() , 'people', $fieldMap, Collection::class);
+        $output = $arrayConnector->getData();
+
         $expected = [
             'people' => [
                 [
@@ -362,10 +379,14 @@ class ConnectorTransformCest
             new Person('Elizabeth', 'Waitress'),
         ];
 
+        $objectConnector = new ObjectConnector($friends);
+        $arrayConnector = new ArrayConnector();
+        $arrayConnector->setSerializer(new ArraySerializer());
         $fieldMap = new FieldMap(['name' => '*', 'my_job' => ['name']]);
 
-        $output = (new TransformService())->transform($friends, new PersonTransformer(), 'people', $fieldMap,
-            Collection::class);
+        (new ConnectorTransformService())->transform($objectConnector, $arrayConnector, new PersonTransformer() , 'people', $fieldMap, Collection::class);
+        $output = $arrayConnector->getData();
+
         $expected = [
             'people' => [
                 [
