@@ -40,7 +40,7 @@ class ArrayConnector extends Connector
      * @param $dataTransformed
      * @param string $type
      */
-    public function deserialize($key, $dataTransformed, $type = 'item')
+    public function dataFromTransformer($key, $dataTransformed, $type = 'item')
     {
         if ($type == 'item') {
             $this->data = $this->serializer->item($key, $dataTransformed);

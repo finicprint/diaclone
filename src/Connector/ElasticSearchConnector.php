@@ -1,9 +1,9 @@
 <?php
-require '../../vendor/autoload.php';
-
 declare(strict_types = 1);
-
 namespace Diaclone\Connector;
+
+require __DIR__ . '/../../vendor/autoload.php';
+
 use Elasticsearch\ClientBuilder;
 use Diaclone\Serializer\SerializerAbstract;
 
@@ -11,14 +11,14 @@ class ElasticSearchConnector extends Connector
 {
     private $data;
     private $instance;
+    private $serializer;
     private $default_params = [
         'index' => '',
         'type' => ''
     ];
 
-    public function __construct($data, array $params = [], array $hosts = [])
+    public function __construct(array $params = [], array $hosts = [])
     {
-        $this->data = $data;
         $this->default_params = $params;
         if (empty($this->instance)) {
             if (!empty($hosts))
@@ -67,6 +67,20 @@ class ElasticSearchConnector extends Connector
     }
 
     /**
+     * @param $key
+     * @param $dataTransformed
+     * @param string $type
+     */
+    public function dataFromTransformer($key, $dataTransformed, $type = 'item')
+    {
+        if ($type == 'item') {
+            $this->data = $this->serializer->item($key, $dataTransformed);
+        } elseif($type == 'collection') {
+            $this->data = $this->serializer->collection($key, $dataTransformed);
+        }
+    }
+
+    /**
      * @return \Elasticsearch\Client
      */
     public function getInstance()
@@ -88,11 +102,11 @@ class ElasticSearchConnector extends Connector
      * @param array $data
      * @return array
      */
-    public function createDocument(string $id, array $data)
+    public function createDocument(string $id, array $data = [])
     {
         $params = $this->default_params;
         $params['id'] = $id;
-        $params['body'] = $data;
+        $params['body'] = !empty($data) ? $data : $this->data;
         $response = $this->instance->index($params);
         return $response;
     }
@@ -107,7 +121,9 @@ class ElasticSearchConnector extends Connector
         $params = $this->default_params;
         $params['id'] = $id;
         $response = $this->instance->get($params);
-        //TODO; apply desearilize
+        if (!empty($response['found']) && $response['found'] == 1) {
+            $this->data = $response['_source'];
+        }
         return $response;
 
     }

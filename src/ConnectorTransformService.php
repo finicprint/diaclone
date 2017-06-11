@@ -30,9 +30,9 @@ class ConnectorTransformService
         $transformed = $transformer->transform($resource);
 
         if ($resource instanceof Collection) {
-            $connectorOut->deserialize($key, $transformed, 'collection');
+            $connectorOut->dataFromTransformer($key, $transformed, 'collection');
         } else {
-            $connectorOut->deserialize($key, $transformed);
+            $connectorOut->dataFromTransformer($key, $transformed);
         }
 
     }
