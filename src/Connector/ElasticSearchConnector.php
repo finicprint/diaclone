@@ -6,7 +6,6 @@ class ElasticSearchConnector extends Connector
 {
     private $connection;
     private $params;
-    private $methodToExecute;
 
     public function __construct( $connection, array $params = [])
     {
@@ -38,19 +37,4 @@ class ElasticSearchConnector extends Connector
         return $this->connection->index($this->params);
     }
 
-
-    public function get()
-    {
-        return $this->connection->get($this->params);
-    }
-
-    public function set()
-    {
-        return $this->connection->index($this->params);
-    }
-
-    public function query()
-    {
-        return call_user_func(array($this, $this->methodToExecute));
-    }
 }
