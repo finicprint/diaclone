@@ -1,248 +1,44 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Test\Unit;
 
 use UnitTester;
-use Diaclone\Serializer\ArraySerializer;
-use Diaclone\Connector\ObjectConnector;
-use Diaclone\Connector\ArrayConnector;
-use Diaclone\Resource\Collection;
-use Diaclone\Resource\FieldMap;
+use Diaclone\Resource\Object;
+use Test\Unit\Support\Connector\TestConnector;
 use Diaclone\ConnectorTransformService;
 use Test\Unit\Support\Entities\Person;
 use Test\Unit\Support\Transformers\PersonTransformer;
-use Diaclone\Connector\ElasticSearchConnector;
-
+use Diaclone\Connector\Connector;
 
 class ConnectorTransformCest
 {
     public function testTransformationAll(UnitTester $I)
     {
         $friends = [
-            new Person('Paul', 'Real estate novelist'),
-            new Person('John', 'Bartender'),
-            new Person('Davy', 'Sailor'),
-            new Person('Elizabeth', 'Waitress'),
+            Person::create('Paul', 'Real estate novelist'),
+            Person::create('John', 'Bartender'),
+            Person::create('Davy', 'Sailor'),
+            Person::create('Elizabeth', 'Waitress'),
         ];
-        $objectConnector = new ObjectConnector(new Person('Bill', 'Piano Man', $friends));
-        $arrayConnector = new ArrayConnector();
-        $arrayConnector->setSerializer(new ArraySerializer());
 
-        (new ConnectorTransformService())->transform($objectConnector, $arrayConnector,
-            new PersonTransformer(), 'person');
-        $output = $arrayConnector->getData();
+        $connector = new TestConnector();
+        $connector->setData(Person::create('Bill', 'Piano Man', $friends));
+
+        (new ConnectorTransformService())->transform(
+            $connector,
+            new PersonTransformer()
+        );
+        $output = $connector->getOutgoingData();
         $expected = [
-            'person' => [
-                'name'       => 'My name is Bill',
-                'age'        => 42,
-                'pigLatin'   => 'Ymay amenay isyay Illbay',
-                'occupation' => [
-                    'name'      => 'Piano Man',
-                    'startDate' => '2017-01-01 10:10:10',
-                ],
-                'friends'    => [
-                    [
-                        'name'       => 'My name is Paul',
-                        'age'        => 42,
-                        'pigLatin'   => 'Ymay amenay isyay Aulpay',
-                        'occupation' => [
-                            'name'      => 'Real estate novelist',
-                            'startDate' => '2017-01-01 10:10:10',
-                        ],
-                        'friends'    => [],
-                    ],
-                    [
-                        'name'       => 'My name is John',
-                        'age'        => 42,
-                        'pigLatin'   => 'Ymay amenay isyay Ohnjay',
-                        'occupation' => [
-                            'name'      => 'Bartender',
-                            'startDate' => '2017-01-01 10:10:10',
-                        ],
-                        'friends'    => [],
-                    ],
-                    [
-                        'name'       => 'My name is Davy',
-                        'age'        => 42,
-                        'pigLatin'   => 'Ymay amenay isyay Avyday',
-                        'occupation' => [
-                            'name'      => 'Sailor',
-                            'startDate' => '2017-01-01 10:10:10',
-                        ],
-                        'friends'    => [],
-                    ],
-                    [
-                        'name'       => 'My name is Elizabeth',
-                        'age'        => 42,
-                        'pigLatin'   => 'Ymay amenay isyay Elizabethyay',
-                        'occupation' => [
-                            'name'      => 'Waitress',
-                            'startDate' => '2017-01-01 10:10:10',
-                        ],
-                        'friends'    => [],
-                    ],
-                ],
-            ],
-        ];
-        $I->assertEquals($expected, $output);
-    }
-
-    public function testUntransform(UnitTester $I)
-    {
-        $payload = [
             'name'       => 'My name is Bill',
             'age'        => 42,
+            'pigLatin'   => 'Ymay amenay isyay Illbay',
             'occupation' => [
-                'name' => 'Piano Man',
+                'name'      => 'Piano Man',
+                'startDate' => '2017-01-01 10:10:10',
             ],
             'friends'    => [
-                [
-                    'name'       => 'My name is Paul',
-                    'age'        => 42,
-                    'occupation' => [
-                        'name'      => 'Real estate novelist',
-                        'startDate' => '2017-01-01 10:10:10',
-                    ],
-                ],
-                [
-                    'name'       => 'My name is John',
-                    'age'        => 42,
-                    'occupation' => [
-                        'name'      => 'Bartender',
-                        'startDate' => '2017-01-01 10:10:10',
-                    ],
-                ],
-                [
-                    'name'       => 'My name is Davy',
-                    'age'        => 42,
-                    'occupation' => [
-                        'name'      => 'Sailor',
-                        'startDate' => '2017-01-01 10:10:10',
-                    ],
-                ],
-                [
-                    'name'       => 'My name is Elizabeth',
-                    'age'        => 42,
-                    'occupation' => [
-                        'name'      => 'Waitress',
-                        'startDate' => '2017-01-01 10:10:10',
-                    ],
-                ],
-            ],
-        ];
-        $output = (new ConnectorTransformService())->untransform($payload, new PersonTransformer());
-
-        $expected = [
-            'name'       => 'My name is Bill',
-            'age'        => 42,
-            'my_job'     => [
-                'name' => 'Piano Man',
-            ],
-            'my_friends' => [
-                [
-                    'name'   => 'My name is Paul',
-                    'age'    => 42,
-                    'my_job' => [
-                        'name'       => 'Real estate novelist',
-                        'start_date' => '2017-01-01 10:10:10',
-                    ],
-                ],
-                [
-                    'name'   => 'My name is John',
-                    'age'    => 42,
-                    'my_job' => [
-                        'name'       => 'Bartender',
-                        'start_date' => '2017-01-01 10:10:10',
-                    ],
-                ],
-                [
-                    'name'   => 'My name is Davy',
-                    'age'    => 42,
-                    'my_job' => [
-                        'name'       => 'Sailor',
-                        'start_date' => '2017-01-01 10:10:10',
-                    ],
-                ],
-                [
-                    'name'   => 'My name is Elizabeth',
-                    'age'    => 42,
-                    'my_job' => [
-                        'name'       => 'Waitress',
-                        'start_date' => '2017-01-01 10:10:10',
-                    ],
-                ],
-            ],
-        ];
-        $I->assertEquals($expected, $output);
-    }
-
-    public function testTransformationWithoutKey(UnitTester $I)
-    {
-        $objectConnector = new ObjectConnector(new Person('Bill', 'Piano Man'));
-        $arrayConnector = new ArrayConnector();
-        $arrayConnector->setSerializer(new ArraySerializer());
-
-        (new ConnectorTransformService())->transform($objectConnector, $arrayConnector, new PersonTransformer());
-        $output = $arrayConnector->getData();
-
-        $expected = [
-            'name'       => 'My name is Bill',
-            'age'        => 42,
-            'pigLatin'   => 'Ymay amenay isyay Illbay',
-            'occupation' => [
-                'name'      => 'Piano Man',
-                'startDate' => '2017-01-01 10:10:10',
-            ],
-            'friends'    => [],
-        ];
-
-        $I->assertEquals($expected, $output);
-    }
-
-    public function testTransformationESConnector(UnitTester $I)
-    {
-        $objectConnector = new ObjectConnector(new Person('Bill', 'Piano Man'));
-        $ESConnector = new ElasticSearchConnector(["index" => 'people', "type" => 'test']);
-        $ESConnector->setSerializer(new ArraySerializer());
-
-        (new ConnectorTransformService())->transform($objectConnector, $ESConnector, new PersonTransformer());
-
-        $ESConnector->createDocument('0');
-        $ESConnector->getDocument('0');
-        $output = $ESConnector->getData();
-
-        $expected = [
-            'name'       => 'My name is Bill',
-            'age'        => 42,
-            'pigLatin'   => 'Ymay amenay isyay Illbay',
-            'occupation' => [
-                'name'      => 'Piano Man',
-                'startDate' => '2017-01-01 10:10:10',
-            ],
-            'friends'    => [],
-        ];
-
-        $I->assertEquals($expected, $output);
-    }
-
-    public function testTransformationCollectionAll(UnitTester $I)
-    {
-        $friends = [
-            new Person('Paul', 'Real estate novelist'),
-            new Person('John', 'Bartender'),
-            new Person('Davy', 'Sailor'),
-            new Person('Elizabeth', 'Waitress'),
-        ];
-        $objectConnector = new ObjectConnector($friends);
-        $arrayConnector = new ArrayConnector();
-        $arrayConnector->setSerializer(new ArraySerializer());
-
-        (new ConnectorTransformService())->transform($objectConnector, $arrayConnector, new PersonTransformer() , 'people', '*', Collection::class);
-        $output = $arrayConnector->getData();
-
-        $expected = [
-            'people' => [
                 [
                     'name'       => 'My name is Paul',
                     'age'        => 42,
@@ -288,106 +84,42 @@ class ConnectorTransformCest
         $I->assertEquals($expected, $output);
     }
 
-    public function testTransformationCollectionWithoutKey(UnitTester $I)
+    public function testUntransform(UnitTester $I)
     {
-        $friends = [
-            new Person('Paul', 'Real estate novelist'),
-            new Person('John', 'Bartender'),
-            new Person('Davy', 'Sailor'),
-            new Person('Elizabeth', 'Waitress'),
-        ];
-        $objectConnector = new ObjectConnector($friends);
-        $arrayConnector = new ArrayConnector();
-        $arrayConnector->setSerializer(new ArraySerializer());
-
-        (new ConnectorTransformService())->transform($objectConnector, $arrayConnector, new PersonTransformer() , '', '*', Collection::class);
-        $output = $arrayConnector->getData();
-        $expected = [
-            [
-                'name'       => 'My name is Paul',
-                'age'        => 42,
-                'pigLatin'   => 'Ymay amenay isyay Aulpay',
-                'occupation' => [
-                    'name'      => 'Real estate novelist',
-                    'startDate' => '2017-01-01 10:10:10',
-                ],
-                'friends'    => [],
+        $payload = [
+            'name'       => 'Bill',
+            'age'        => 21,
+            'occupation' => [
+                'name' => 'Piano Man',
             ],
-            [
-                'name'       => 'My name is John',
-                'age'        => 42,
-                'pigLatin'   => 'Ymay amenay isyay Ohnjay',
-                'occupation' => [
-                    'name'      => 'Bartender',
-                    'startDate' => '2017-01-01 10:10:10',
-                ],
-                'friends'    => [],
-            ],
-            [
-                'name'       => 'My name is Davy',
-                'age'        => 42,
-                'pigLatin'   => 'Ymay amenay isyay Avyday',
-                'occupation' => [
-                    'name'      => 'Sailor',
-                    'startDate' => '2017-01-01 10:10:10',
-                ],
-                'friends'    => [],
-            ],
-            [
-                'name'       => 'My name is Elizabeth',
-                'age'        => 42,
-                'pigLatin'   => 'Ymay amenay isyay Elizabethyay',
-                'occupation' => [
-                    'name'      => 'Waitress',
-                    'startDate' => '2017-01-01 10:10:10',
-                ],
-                'friends'    => [],
-            ],
-        ];
-        $I->assertEquals($expected, $output);
-    }
-
-    public function testTransformationCollectionPartial(UnitTester $I)
-    {
-        $friends = [
-            new Person('Paul', 'Real estate novelist'),
-            new Person('John', 'Bartender'),
-            new Person('Davy', 'Sailor'),
-            new Person('Elizabeth', 'Waitress'),
-        ];
-        $objectConnector = new ObjectConnector($friends);
-        $arrayConnector = new ArrayConnector();
-        $arrayConnector->setSerializer(new ArraySerializer());
-        $fieldMap = new FieldMap(['name', 'my_job']);
-
-        (new ConnectorTransformService())->transform($objectConnector, $arrayConnector, new PersonTransformer() , 'people', $fieldMap, Collection::class);
-        $output = $arrayConnector->getData();
-
-        $expected = [
-            'people' => [
+            'friends'    => [
                 [
-                    'name'       => 'My name is Paul',
+                    'name'       => 'Paul',
+                    'age'        => 42,
                     'occupation' => [
                         'name'      => 'Real estate novelist',
                         'startDate' => '2017-01-01 10:10:10',
                     ],
                 ],
                 [
-                    'name'       => 'My name is John',
+                    'name'       => 'John',
+                    'age'        => 42,
                     'occupation' => [
                         'name'      => 'Bartender',
                         'startDate' => '2017-01-01 10:10:10',
                     ],
                 ],
                 [
-                    'name'       => 'My name is Davy',
+                    'name'       => 'Davy',
+                    'age'        => 42,
                     'occupation' => [
                         'name'      => 'Sailor',
                         'startDate' => '2017-01-01 10:10:10',
                     ],
                 ],
                 [
-                    'name'       => 'My name is Elizabeth',
+                    'name'       => 'Elizabeth',
+                    'age'        => 42,
                     'occupation' => [
                         'name'      => 'Waitress',
                         'startDate' => '2017-01-01 10:10:10',
@@ -395,54 +127,72 @@ class ConnectorTransformCest
                 ],
             ],
         ];
-        $I->assertEquals($expected, $output);
+        $connector = new TestConnector($payload);
+
+        (new ConnectorTransformService())->untransform($connector, new PersonTransformer(), Object::class);
+
+        /** @var Person $person */
+        $person = $connector->getData();
+        $I->assertInstanceOf(Person::class, $person, 'A Person object should have been returned');
+        $I->assertEquals('My name is Bill', $person->getName());
+        $I->assertEquals(21, $person->getAge());
+        $I->assertEquals('Piano Man', $person->my_job->getName());
+        $friends = [
+            'My name is Paul'      => 'Real estate novelist',
+            'My name is John'      => 'Bartender',
+            'My name is Davy'      => 'Sailor',
+            'My name is Elizabeth' => 'Waitress',
+        ];
+        foreach ($person->getMyFriends() as $friend) {
+            $I->assertInstanceOf(Person::class, $friend, 'A Person object should have been returned');
+            $name = $friend->getName();
+            $I->assertSame($friends[$name], $friend->my_job->getName());
+        }
     }
 
-    public function testTransformationCollectionNestedPartial(UnitTester $I)
+    public function testTransformationESConnector(UnitTester $I)
     {
-        $friends = [
-            new Person('Paul', 'Real estate novelist'),
-            new Person('John', 'Bartender'),
-            new Person('Davy', 'Sailor'),
-            new Person('Elizabeth', 'Waitress'),
-        ];
+        $ESClass =  Connector::getConnectorClassByType('elasticsearch');
+        $ESConnector =  new $ESClass();
+        $ESConnector->setData(Person::create('Bill', 'Piano Man'));
 
-        $objectConnector = new ObjectConnector($friends);
-        $arrayConnector = new ArrayConnector();
-        $arrayConnector->setSerializer(new ArraySerializer());
-        $fieldMap = new FieldMap(['name' => '*', 'my_job' => ['name']]);
+        (new ConnectorTransformService())->transform($ESConnector, new PersonTransformer());
 
-        (new ConnectorTransformService())->transform($objectConnector, $arrayConnector, new PersonTransformer() , 'people', $fieldMap, Collection::class);
-        $output = $arrayConnector->getData();
-
+        $output = $ESConnector->getOutgoingData();
         $expected = [
-            'people' => [
-                [
-                    'name'       => 'My name is Paul',
-                    'occupation' => [
-                        'name'      => 'Real estate novelist',
-                    ],
-                ],
-                [
-                    'name'       => 'My name is John',
-                    'occupation' => [
-                        'name'      => 'Bartender',
-                    ],
-                ],
-                [
-                    'name'       => 'My name is Davy',
-                    'occupation' => [
-                        'name'      => 'Sailor',
-                    ],
-                ],
-                [
-                    'name'       => 'My name is Elizabeth',
-                    'occupation' => [
-                        'name'      => 'Waitress',
-                    ],
-                ],
+            'name'       => 'My name is Bill',
+            'age'        => 42,
+            'pigLatin'   => 'Ymay amenay isyay Illbay',
+            'occupation' => [
+                'name'      => 'Piano Man',
+                'startDate' => '2017-01-01 10:10:10',
             ],
+            'friends'    => [],
         ];
         $I->assertEquals($expected, $output);
+
+        //Test interacting with the BD
+        $ESInstance = $ESConnector->getInstance();
+        //insert data
+        $params = [
+            'index' => 'people',
+            'type' => 'test',
+            'id' => '0',
+            'body' => $output
+        ];
+        $insertOutput = $ESInstance->index($params);
+
+        $I->assertEquals(1, $insertOutput['_shards']['successful']);
+
+        //retrive data
+        $params = [
+            'index' => 'people',
+            'type' => 'test',
+            'id' => '0',
+        ];
+
+        $retrieveOutput = $ESInstance->get($params);
+        $I->assertEquals($expected, $retrieveOutput['_source']);
+
     }
 }

@@ -6,6 +6,7 @@ namespace Diaclone;
 use Diaclone\Resource\Collection;
 use Diaclone\Connector\Connector;
 use Diaclone\Resource\Item;
+use Diaclone\Resource\Object;
 use Diaclone\Serializer\ArraySerializer;
 use Diaclone\Serializer\SerializerAbstract;
 use Diaclone\Transformer\AbstractTransformer;
@@ -24,27 +25,22 @@ class ConnectorTransformService
         $this->serializer = $serializer ?: new ArraySerializer();
     }
 
-    public function transform(Connector $connectorIn, Connector $connectorOut, AbstractTransformer $transformer, $key = '', $fieldMap = '*', $resourceClass = Item::class)
+    public function transform(Connector $connector, AbstractTransformer $transformer, $key = '', $fieldMap = '*', $resourceClass = Object::class)
     {
-        $resource = new $resourceClass($connectorIn->getData(), '', $fieldMap);
+        $resource = new $resourceClass($connector->getData(), '', $fieldMap);
         $transformed = $transformer->transform($resource);
 
         if ($resource instanceof Collection) {
-            $connectorOut->dataFromTransformer($key, $transformed, 'collection');
+            $connector->sendDataToSource($transformed);
         } else {
-            $connectorOut->dataFromTransformer($key, $transformed);
+            $connector->sendDataToSource($transformed);
         }
-
     }
 
-    public function untransform($data, AbstractTransformer $transformer, $resourceClass = Item::class): array
+    public function untransform(Connector $connector, AbstractTransformer $transformer, $resourceClass = Object::class)
     {
-        $resource = new $resourceClass($data);
+        $resource = new $resourceClass($connector->getDataFromSource());
 
-        return $transformer->untransform($resource);
-    }
-
-    public function save() {
-
+        $connector->setData($transformer->untransform($resource));
     }
 }

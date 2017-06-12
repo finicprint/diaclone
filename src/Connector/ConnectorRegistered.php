@@ -4,7 +4,7 @@ namespace Diaclone\Connector;
 class ConnectorRegistered
 {
     public static $connectorsCatalog = [
-        'default' => 'mysql',
+        'default' => 'elasticsearch',
         'elasticsearch' => ElasticSearchConnector::class,
         'mysql' => MySQLConnector::class
     ];
