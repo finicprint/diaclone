@@ -2,26 +2,17 @@
 declare(strict_types = 1);
 namespace Diaclone\Connector;
 
-require __DIR__ . '/../../vendor/autoload.php';
-
-use Elasticsearch\ClientBuilder;
-use Diaclone\Serializer\SerializerAbstract;
-
 class ElasticSearchConnector extends Connector
 {
-    private $instance;
+    private $connection;
+    private $params;
+    private $methodToExecute;
 
-    protected $incomingData;
-    protected $outgoingData;
-
-    public function __construct($data = null, array $hosts = [])
+    public function __construct( $connection, array $params = [])
     {
-        $this->data = $data;
-        if (empty($this->instance)) {
-            if (!empty($hosts))
-                $this->instance = ClientBuilder::create()->setHosts($hosts)->build();
-            else
-                $this->instance = ClientBuilder::create()->build();
+        $this->params = $params;
+        if (empty($this->connection)) {
+            $this->connection = $connection;
         }
     }
 
@@ -37,24 +28,29 @@ class ElasticSearchConnector extends Connector
 
     public function getDataFromSource()
     {
-        return $this->incomingData;
+        unset($this->params['body']);
+        return $this->connection->get($this->params);
     }
 
     public function sendDataToSource($data)
     {
-        return $this->outgoingData = $data;
+        $this->params['body'] = $data;
+        return $this->connection->index($this->params);
     }
 
-    public function getOutgoingData()
+
+    public function get()
     {
-        return $this->outgoingData;
+        return $this->connection->get($this->params);
     }
 
-    /**
-     * @return \Elasticsearch\Client
-     */
-    public function getInstance()
+    public function set()
     {
-        return $this->instance;
+        return $this->connection->index($this->params);
+    }
+
+    public function query()
+    {
+        return call_user_func(array($this, $this->methodToExecute));
     }
 }

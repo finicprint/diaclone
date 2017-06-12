@@ -11,6 +11,10 @@ use Test\Unit\Support\Entities\Person;
 use Test\Unit\Support\Transformers\PersonTransformer;
 use Diaclone\Connector\Connector;
 
+require __DIR__ . '/../../vendor/autoload.php';
+
+use Elasticsearch\ClientBuilder;
+
 class ConnectorTransformCest
 {
     public function testTransformationAll(UnitTester $I)
@@ -153,12 +157,12 @@ class ConnectorTransformCest
     public function testTransformationESConnector(UnitTester $I)
     {
         $ESClass =  Connector::getConnectorClassByType('elasticsearch');
-        $ESConnector =  new $ESClass();
+        $ESConnector =  new $ESClass(ClientBuilder::create()->build(), ['index' => 'people', 'type' => 'test', 'id' => '1']);
         $ESConnector->setData(Person::create('Bill', 'Piano Man'));
 
         (new ConnectorTransformService())->transform($ESConnector, new PersonTransformer());
 
-        $output = $ESConnector->getOutgoingData();
+        $output = $ESConnector->getDataFromSource();
         $expected = [
             'name'       => 'My name is Bill',
             'age'        => 42,
@@ -169,30 +173,7 @@ class ConnectorTransformCest
             ],
             'friends'    => [],
         ];
-        $I->assertEquals($expected, $output);
-
-        //Test interacting with the BD
-        $ESInstance = $ESConnector->getInstance();
-        //insert data
-        $params = [
-            'index' => 'people',
-            'type' => 'test',
-            'id' => '0',
-            'body' => $output
-        ];
-        $insertOutput = $ESInstance->index($params);
-
-        $I->assertEquals(1, $insertOutput['_shards']['successful']);
-
-        //retrive data
-        $params = [
-            'index' => 'people',
-            'type' => 'test',
-            'id' => '0',
-        ];
-
-        $retrieveOutput = $ESInstance->get($params);
-        $I->assertEquals($expected, $retrieveOutput['_source']);
+        $I->assertEquals($expected, $output['_source']);
 
     }
 }
