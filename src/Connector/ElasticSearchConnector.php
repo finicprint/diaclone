@@ -29,7 +29,7 @@ class ElasticSearchConnector extends Connector
     public function getDataFromSource()
     {
         unset($this->params['body']);
-        return $this->connection->get($this->params);
+        return $this->connection->get($this->params)['_source'];
     }
 
     public function sendDataToSource($data)

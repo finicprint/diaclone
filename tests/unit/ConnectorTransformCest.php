@@ -173,7 +173,35 @@ class ConnectorTransformCest
             ],
             'friends'    => [],
         ];
-        $I->assertEquals($expected, $output['_source']);
+        $I->assertEquals($expected, $output);
+
+    }
+
+    public function testUnTransformationESConnector(UnitTester $I)
+    {
+
+        $dataTransformed = [
+            'name'       => 'John',
+            'age'        => 63,
+            'occupation' => [
+                'name'      => 'Piano Man',
+                'startDate' => '2017-01-01 10:10:10',
+            ],
+            'friends'    => [],
+        ];
+        $ESClass =  Connector::getConnectorClassByType('elasticsearch');
+        $ESConnector =  new $ESClass(ClientBuilder::create()->build(), ['index' => 'people', 'type' => 'test', 'id' => '2']);
+
+        //insert data transformed
+        $ESConnector->sendDataToSource($dataTransformed);
+
+        (new ConnectorTransformService())->untransform($ESConnector, new PersonTransformer(), Object::class);
+
+        $person = $ESConnector->getData();
+        $I->assertInstanceOf(Person::class, $person, 'A Person object should have been returned');
+        $I->assertEquals('My name is John', $person->getName());
+        $I->assertEquals(63, $person->getAge());
+        $I->assertEquals('Piano Man', $person->my_job->getName());
 
     }
 }
