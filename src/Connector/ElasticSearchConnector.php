@@ -2,16 +2,18 @@
 declare(strict_types = 1);
 namespace Diaclone\Connector;
 
+use Elasticsearch\Client;
+
 class ElasticSearchConnector extends Connector
 {
-    private $connection;
+    private $client;
     private $params;
 
-    public function __construct( $connection, array $params = [])
+    public function __construct( Client $client, array $params = [])
     {
         $this->params = $params;
-        if (empty($this->connection)) {
-            $this->connection = $connection;
+        if (empty($this->client)) {
+            $this->client = $client;
         }
     }
 
@@ -28,13 +30,13 @@ class ElasticSearchConnector extends Connector
     public function getDataFromSource()
     {
         unset($this->params['body']);
-        return $this->connection->get($this->params)['_source'];
+        return $this->client->get($this->params)['_source'];
     }
 
     public function sendDataToSource($data)
     {
         $this->params['body'] = $data;
-        return $this->connection->index($this->params);
+        return $this->client->index($this->params);
     }
 
 }
