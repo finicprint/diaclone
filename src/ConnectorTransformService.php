@@ -5,7 +5,6 @@ namespace Diaclone;
 
 use Diaclone\Resource\Collection;
 use Diaclone\Connector\Connector;
-use Diaclone\Resource\Item;
 use Diaclone\Resource\Object;
 use Diaclone\Serializer\ArraySerializer;
 use Diaclone\Serializer\SerializerAbstract;
