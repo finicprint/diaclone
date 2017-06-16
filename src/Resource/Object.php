@@ -36,7 +36,7 @@ class Object extends Item
             /** @var AbstractTransformer $propertyTransformer */
             $propertyTransformer = new $propertyTransformerClass();
 
-            $dataTypeClass = $this->getDataType($propertyTransformer, $property);
+            $dataTypeClass = $this->getDataType($transformer, $property);
             $dataType = new $dataTypeClass($data, $property);
 
             if ($propertyTransformer->allowUntransform()) {
