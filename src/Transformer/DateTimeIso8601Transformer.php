@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Diaclone\Transformer;
 
@@ -14,6 +14,9 @@ class DateTimeIso8601Transformer extends AbstractTransformer
     public function transform(ResourceInterface $resource)
     {
         $value = $this->getPropertyValueFromResource($resource);
+        if (empty($value)) {
+            return '';
+        }
 
         try {
 
@@ -22,7 +25,6 @@ class DateTimeIso8601Transformer extends AbstractTransformer
             }
 
             return '';
-
         } catch (Exception $e) {
             throw new TransformException('Failed to transform ' . $resource->getPropertyName() . ' because Carbon.');
         }
@@ -46,9 +48,8 @@ class DateTimeIso8601Transformer extends AbstractTransformer
     public function untransform(ResourceInterface $resource)
     {
         $value = $resource->getData();
-
         if (empty($value)) {
-            return null;
+            return '';
         }
 
         try {
