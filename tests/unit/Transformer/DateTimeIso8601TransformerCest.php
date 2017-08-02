@@ -34,4 +34,23 @@ class DateTimeIso8601TransformerCest
 
         $I->assertEquals(new Carbon('2016-01-12 17:00:00'), $dateTime);
     }
+
+    public function testEmptyStringTransform(UnitTester $I)
+    {
+        $transformer = new DateTimeIso8601Transformer();
+        $resource = new Item('');
+
+        $isoDateTime = $transformer->transform($resource);
+
+        $I->assertSame('', $isoDateTime);
+    }
+
+    public function testEmptyStringUntransform(UnitTester $I)
+    {
+        $transformer = new DateTimeIso8601Transformer();
+        $resource = new Item('');
+        $dateTime = $transformer->untransform($resource);
+
+        $I->assertEquals('', $dateTime);
+    }
 }
