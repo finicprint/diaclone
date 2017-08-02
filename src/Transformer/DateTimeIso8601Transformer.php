@@ -19,7 +19,6 @@ class DateTimeIso8601Transformer extends AbstractTransformer
         }
 
         try {
-
             if ($carbon = self::parseCarbon($value)) {
                 return $carbon->toIso8601String();
             }
