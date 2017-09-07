@@ -47,8 +47,9 @@ class DateTimeIso8601Transformer extends AbstractTransformer
     public function untransform(ResourceInterface $resource)
     {
         $value = $resource->getData();
+
         if (empty($value)) {
-            return '';
+            return null;
         }
 
         try {

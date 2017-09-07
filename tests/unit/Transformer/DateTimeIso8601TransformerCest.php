@@ -45,12 +45,22 @@ class DateTimeIso8601TransformerCest
         $I->assertSame('', $isoDateTime);
     }
 
+    public function testNullTransform(UnitTester $I)
+    {
+        $transformer = new DateTimeIso8601Transformer();
+        $resource = new Item(null);
+
+        $isoDateTime = $transformer->transform($resource);
+
+        $I->assertSame('', $isoDateTime);
+    }
+
     public function testEmptyStringUntransform(UnitTester $I)
     {
         $transformer = new DateTimeIso8601Transformer();
         $resource = new Item('');
         $dateTime = $transformer->untransform($resource);
 
-        $I->assertEquals('', $dateTime);
+        $I->assertNull($dateTime);
     }
 }
