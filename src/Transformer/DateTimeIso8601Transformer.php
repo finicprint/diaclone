@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace Diaclone\Transformer;
 
-use Carbon\Carbon;
 use DateTime;
+use Exception;
+use Carbon\Carbon;
 use Diaclone\Exception\TransformException;
 use Diaclone\Resource\ResourceInterface;
-use Exception;
 
 class DateTimeIso8601Transformer extends AbstractTransformer
 {
@@ -20,7 +20,10 @@ class DateTimeIso8601Transformer extends AbstractTransformer
 
         try {
             if ($carbon = self::parseCarbon($value)) {
-                return $carbon->toIso8601String();
+                // replace '+##:##' with '+####'
+                return preg_replace_callback('/\+[0-9]{2}:[0-9]{2}/', function($matches) {
+                    return str_replace(':', '', $matches[0]);
+                }, $carbon->toIso8601String());
             }
 
             return '';

@@ -2,3 +2,9 @@
 
 # diaclone
 Transform your data
+
+## Installation
+
+```bash
+composer require picr/diaclone
+```
