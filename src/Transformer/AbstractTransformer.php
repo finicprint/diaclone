@@ -42,12 +42,12 @@ abstract class AbstractTransformer
      */
     protected static $transformers = [];
 
-    public function allowUntransform()
+    public function allowUntransform(ResourceInterface $resource): bool
     {
         return true;
     }
 
-    public function allowTransform()
+    public function allowTransform(ResourceInterface $resource): bool
     {
         return true;
     }

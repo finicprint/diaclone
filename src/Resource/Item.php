@@ -42,7 +42,7 @@ class Item extends AbstractResource
             /** @var AbstractTransformer $propertyTransformer */
             $propertyTransformer = new $propertyTransformerClass();
 
-            if ($propertyTransformer->allowTransform()) {
+            if ($propertyTransformer->allowTransform($dataType)) {
                 $response[$mappedProperties[$property]] = $propertyTransformer->transform($dataType);
             }
         }
@@ -76,7 +76,7 @@ class Item extends AbstractResource
             /** @var AbstractTransformer $propertyTransformer */
             $propertyTransformer = new $propertyTransformerClass();
 
-            if ($propertyTransformer->allowUntransform()) {
+            if ($propertyTransformer->allowUntransform($dataType)) {
                 try {
                     $response[$property] = $propertyTransformer->untransform($dataType);
                 } catch (UnrecognizedInputException $e) {
