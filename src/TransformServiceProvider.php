@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Diaclone;
 
@@ -8,9 +8,13 @@ use Illuminate\Support\ServiceProvider;
 
 class TransformServiceProvider extends ServiceProvider
 {
+    const DEFAULT_CONFIG = __DIR__ . '/../config/diaclone.php';
+
     public function boot()
     {
-
+        $this->publishes([
+            self::DEFAULT_CONFIG => config_path('diaclone.php'),
+        ]);
     }
 
     public function register()
@@ -20,16 +24,11 @@ class TransformServiceProvider extends ServiceProvider
 
     protected function registerTransform()
     {
-        $serializer = $this->getJsonSerializer();
-        $this->app->singleton('transform', function ($app) use ($serializer) {
-            return new TransformService($serializer);
-        });
-    }
+        $this->mergeConfigFrom(self::DEFAULT_CONFIG, 'diaclone');
 
-    protected function getJsonSerializer()
-    {
         $serializer = $this->app->config->get('diaclone.serializer');
-
-        return $serializer ? new $serializer : new SimpleJsonSerializer();
+        $this->app->singleton('transform', function ($app) use ($serializer) {
+            return new TransformService(new $serializer);
+        });
     }
 }
