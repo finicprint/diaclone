@@ -20,8 +20,16 @@ class TransformServiceProvider extends ServiceProvider
 
     protected function registerTransform()
     {
-        $this->app->singleton('transform', function ($app) {
-            return new TransformService(new SimpleJsonSerializer());
+        $serializer = $this->getJsonSerializer();
+        $this->app->singleton('transform', function ($app) use ($serializer) {
+            return new TransformService($serializer);
         });
+    }
+
+    protected function getJsonSerializer()
+    {
+        $serializer = $this->app->config->get('diaclone.serializer');
+
+        return $serializer ? new $serializer : new SimpleJsonSerializer();
     }
 }
