@@ -9,9 +9,11 @@ use stdClass;
 
 class SimpleJsonSerializer extends SerializerAbstract
 {
+    protected $jsonEncodingOptions = JSON_PRETTY_PRINT;
+
     public function collection($resourceKey, $data)
     {
-        return json_encode(empty($resourceKey) ? (array)$data : [$resourceKey => $data], JSON_PRETTY_PRINT);
+        return json_encode(empty($resourceKey) ? (array)$data : [$resourceKey => $data], $this->jsonEncodingOptions);
     }
 
     public function item($resourceKey, $data)
@@ -24,7 +26,7 @@ class SimpleJsonSerializer extends SerializerAbstract
             $data = [$resourceKey => $data];
         }
 
-        return json_encode($data, JSON_PRETTY_PRINT);
+        return json_encode($data, $this->jsonEncodingOptions);
     }
 
     public function meta(array $meta)
