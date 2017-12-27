@@ -4,10 +4,11 @@ declare(strict_types = 1);
 namespace Test\Unit\Support\Transformers;
 
 use Diaclone\Resource\Collection;
-use Diaclone\Transformer\AbstractTransformer;
+use Diaclone\Transformer\AbstractObjectTransformer;
 use Diaclone\Transformer\IntegerTransformer;
+use Test\Unit\Support\Entities\Person;
 
-class PersonTransformer extends AbstractTransformer
+class PersonTransformer extends AbstractObjectTransformer
 {
     protected static $mappedProperties = [
         'name'       => 'name',
@@ -27,4 +28,9 @@ class PersonTransformer extends AbstractTransformer
     protected static $dataTypes = [
         'my_friends' => Collection::class,
     ];
+
+    public function getObjectClass(): string
+    {
+        return Person::class;
+    }
 }
