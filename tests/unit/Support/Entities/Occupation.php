@@ -10,11 +10,14 @@ class Occupation
     protected $name;
     protected $startDate;
 
-    public function __construct(string $name, string $startDate = null)
+    public static function create(string $name, string $startDate = null)
     {
-        $this->name = $name;
-        $this->startDate = $startDate ?: '2017-01-01 10:10:10';
+        $occupation = new self();
+        $occupation->name = $name;
+        $occupation->startDate = $startDate ?: '2017-01-01 10:10:10';
         //$this->startDate = $startDate ?: (new DateTime())->format('Y-m-d H:i:s');
+
+        return $occupation;
     }
 
     public function getName()
@@ -22,8 +25,18 @@ class Occupation
         return $this->name;
     }
 
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
     public function getStartDate()
     {
         return $this->startDate;
+    }
+
+    public function setStartDate($startDate)
+    {
+        $this->startDate = $startDate;
     }
 }
