@@ -6,14 +6,10 @@ namespace Test\Unit\Support\Transformers;
 use Diaclone\Transformer\AbstractTransformer;
 use Diaclone\Transformer\DateTimeIso8601Transformer;
 
-class OccupationTransformer extends AbstractTransformer
+class OccupationArrayTransformer extends AbstractTransformer
 {
     protected static $mappedProperties = [
         'name'       => 'name',
         'start_date' => 'startDate',
-    ];
-
-    protected static $transformers = [
-        'start_date' => DateTimeIso8601Transformer::class,
     ];
 }

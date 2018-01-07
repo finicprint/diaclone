@@ -100,4 +100,5 @@ abstract class AbstractTransformer
     {
         return $resource->untransform($this);
     }
+
 }

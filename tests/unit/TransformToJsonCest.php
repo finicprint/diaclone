@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit;
 
+use Test\Unit\Support\Transformers\PersonArrayTransformer;
 use UnitTester;
 use Diaclone\Resource\Collection;
 use Diaclone\Serializer\SimpleJsonSerializer;
@@ -31,7 +32,7 @@ class TransformToJsonCest
                 'pigLatin'   => 'Ymay amenay isyay Illbay',
                 'occupation' => [
                     'name'      => 'Piano Man',
-                    'startDate' => '2017-01-01 10:10:10',
+                    'startDate' => '2017-01-01T10:10:10+0000',
                 ],
                 'friends'    => [
                     [
@@ -40,7 +41,7 @@ class TransformToJsonCest
                         'pigLatin'   => 'Ymay amenay isyay Aulpay',
                         'occupation' => [
                             'name'      => 'Real estate novelist',
-                            'startDate' => '2017-01-01 10:10:10',
+                            'startDate' => '2017-01-01T10:10:10+0000',
                         ],
                         'friends'    => [],
                     ],
@@ -50,7 +51,7 @@ class TransformToJsonCest
                         'pigLatin'   => 'Ymay amenay isyay Ohnjay',
                         'occupation' => [
                             'name'      => 'Bartender',
-                            'startDate' => '2017-01-01 10:10:10',
+                            'startDate' => '2017-01-01T10:10:10+0000',
                         ],
                         'friends'    => [],
                     ],
@@ -60,7 +61,7 @@ class TransformToJsonCest
                         'pigLatin'   => 'Ymay amenay isyay Avyday',
                         'occupation' => [
                             'name'      => 'Sailor',
-                            'startDate' => '2017-01-01 10:10:10',
+                            'startDate' => '2017-01-01T10:10:10+0000',
                         ],
                         'friends'    => [],
                     ],
@@ -70,7 +71,7 @@ class TransformToJsonCest
                         'pigLatin'   => 'Ymay amenay isyay Elizabethyay',
                         'occupation' => [
                             'name'      => 'Waitress',
-                            'startDate' => '2017-01-01 10:10:10',
+                            'startDate' => '2017-01-01T10:10:10+0000',
                         ],
                         'friends'    => [],
                     ],
@@ -126,7 +127,7 @@ class TransformToJsonCest
             ],
         ];
 
-        $output = (new TransformService(new SimpleJsonSerializer()))->untransform($payload, new PersonTransformer());
+        $output = (new TransformService(new SimpleJsonSerializer()))->untransform($payload, new PersonArrayTransformer());
 
         $expected = [
             'name'       => 'My name is Bill',
@@ -184,7 +185,7 @@ class TransformToJsonCest
             'pigLatin'   => 'Ymay amenay isyay Illbay',
             'occupation' => [
                 'name'      => 'Piano Man',
-                'startDate' => '2017-01-01 10:10:10',
+                'startDate' => '2017-01-01T10:10:10+0000',
             ],
             'friends'    => [],
         ];
@@ -212,7 +213,7 @@ class TransformToJsonCest
                     'pigLatin'   => 'Ymay amenay isyay Aulpay',
                     'occupation' => [
                         'name'      => 'Real estate novelist',
-                        'startDate' => '2017-01-01 10:10:10',
+                        'startDate' => '2017-01-01T10:10:10+0000',
                     ],
                     'friends'    => [],
                 ],
@@ -222,7 +223,7 @@ class TransformToJsonCest
                     'pigLatin'   => 'Ymay amenay isyay Ohnjay',
                     'occupation' => [
                         'name'      => 'Bartender',
-                        'startDate' => '2017-01-01 10:10:10',
+                        'startDate' => '2017-01-01T10:10:10+0000',
                     ],
                     'friends'    => [],
                 ],
@@ -232,7 +233,7 @@ class TransformToJsonCest
                     'pigLatin'   => 'Ymay amenay isyay Avyday',
                     'occupation' => [
                         'name'      => 'Sailor',
-                        'startDate' => '2017-01-01 10:10:10',
+                        'startDate' => '2017-01-01T10:10:10+0000',
                     ],
                     'friends'    => [],
                 ],
@@ -242,7 +243,7 @@ class TransformToJsonCest
                     'pigLatin'   => 'Ymay amenay isyay Elizabethyay',
                     'occupation' => [
                         'name'      => 'Waitress',
-                        'startDate' => '2017-01-01 10:10:10',
+                        'startDate' => '2017-01-01T10:10:10+0000',
                     ],
                     'friends'    => [],
                 ],
@@ -271,7 +272,7 @@ class TransformToJsonCest
                 'pigLatin'   => 'Ymay amenay isyay Aulpay',
                 'occupation' => [
                     'name'      => 'Real estate novelist',
-                    'startDate' => '2017-01-01 10:10:10',
+                    'startDate' => '2017-01-01T10:10:10+0000',
                 ],
                 'friends'    => [],
             ],
@@ -281,7 +282,7 @@ class TransformToJsonCest
                 'pigLatin'   => 'Ymay amenay isyay Ohnjay',
                 'occupation' => [
                     'name'      => 'Bartender',
-                    'startDate' => '2017-01-01 10:10:10',
+                    'startDate' => '2017-01-01T10:10:10+0000',
                 ],
                 'friends'    => [],
             ],
@@ -291,7 +292,7 @@ class TransformToJsonCest
                 'pigLatin'   => 'Ymay amenay isyay Avyday',
                 'occupation' => [
                     'name'      => 'Sailor',
-                    'startDate' => '2017-01-01 10:10:10',
+                    'startDate' => '2017-01-01T10:10:10+0000',
                 ],
                 'friends'    => [],
             ],
@@ -301,7 +302,7 @@ class TransformToJsonCest
                 'pigLatin'   => 'Ymay amenay isyay Elizabethyay',
                 'occupation' => [
                     'name'      => 'Waitress',
-                    'startDate' => '2017-01-01 10:10:10',
+                    'startDate' => '2017-01-01T10:10:10+0000',
                 ],
                 'friends'    => [],
             ],
