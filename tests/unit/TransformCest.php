@@ -3,12 +3,13 @@ declare(strict_types = 1);
 
 namespace Test\Unit;
 
-use UnitTester;
 use Diaclone\Resource\Collection;
 use Diaclone\Resource\FieldMap;
 use Diaclone\TransformService;
+use Test\Unit\Support\Transformers\PersonArrayTransformer;
 use Test\Unit\Support\Entities\Person;
 use Test\Unit\Support\Transformers\PersonTransformer;
+use UnitTester;
 
 class TransformCest
 {
@@ -29,7 +30,7 @@ class TransformCest
                 'pigLatin'   => 'Ymay amenay isyay Illbay',
                 'occupation' => [
                     'name'      => 'Piano Man',
-                    'startDate' => '2017-01-01 10:10:10',
+                    'startDate' => '2017-01-01T10:10:10+0000',
                 ],
                 'friends'    => [
                     [
@@ -38,7 +39,7 @@ class TransformCest
                         'pigLatin'   => 'Ymay amenay isyay Aulpay',
                         'occupation' => [
                             'name'      => 'Real estate novelist',
-                            'startDate' => '2017-01-01 10:10:10',
+                            'startDate' => '2017-01-01T10:10:10+0000',
                         ],
                         'friends'    => [],
                     ],
@@ -48,7 +49,7 @@ class TransformCest
                         'pigLatin'   => 'Ymay amenay isyay Ohnjay',
                         'occupation' => [
                             'name'      => 'Bartender',
-                            'startDate' => '2017-01-01 10:10:10',
+                            'startDate' => '2017-01-01T10:10:10+0000',
                         ],
                         'friends'    => [],
                     ],
@@ -58,7 +59,7 @@ class TransformCest
                         'pigLatin'   => 'Ymay amenay isyay Avyday',
                         'occupation' => [
                             'name'      => 'Sailor',
-                            'startDate' => '2017-01-01 10:10:10',
+                            'startDate' => '2017-01-01T10:10:10+0000',
                         ],
                         'friends'    => [],
                     ],
@@ -68,7 +69,7 @@ class TransformCest
                         'pigLatin'   => 'Ymay amenay isyay Elizabethyay',
                         'occupation' => [
                             'name'      => 'Waitress',
-                            'startDate' => '2017-01-01 10:10:10',
+                            'startDate' => '2017-01-01T10:10:10+0000',
                         ],
                         'friends'    => [],
                     ],
@@ -92,7 +93,7 @@ class TransformCest
                     'age'        => 42,
                     'occupation' => [
                         'name'      => 'Real estate novelist',
-                        'startDate' => '2017-01-01 10:10:10',
+                        'startDate' => '2017-01-01T10:10:10+0000',
                     ],
                 ],
                 [
@@ -100,7 +101,7 @@ class TransformCest
                     'age'        => 42,
                     'occupation' => [
                         'name'      => 'Bartender',
-                        'startDate' => '2017-01-01 10:10:10',
+                        'startDate' => '2017-01-01T10:10:10+0000',
                     ],
                 ],
                 [
@@ -108,7 +109,7 @@ class TransformCest
                     'age'        => 42,
                     'occupation' => [
                         'name'      => 'Sailor',
-                        'startDate' => '2017-01-01 10:10:10',
+                        'startDate' => '2017-01-01T10:10:10+0000',
                     ],
                 ],
                 [
@@ -116,12 +117,12 @@ class TransformCest
                     'age'        => 42,
                     'occupation' => [
                         'name'      => 'Waitress',
-                        'startDate' => '2017-01-01 10:10:10',
+                        'startDate' => '2017-01-01T10:10:10+0000',
                     ],
                 ],
             ],
         ];
-        $output = (new TransformService())->untransform($payload, new PersonTransformer());
+        $output = (new TransformService())->untransform($payload, new PersonArrayTransformer());
 
         $expected = [
             'name'       => 'My name is Bill',
@@ -135,7 +136,7 @@ class TransformCest
                     'age'    => 42,
                     'my_job' => [
                         'name'       => 'Real estate novelist',
-                        'start_date' => '2017-01-01 10:10:10',
+                        'start_date' => '2017-01-01T10:10:10+0000',
                     ],
                 ],
                 [
@@ -143,7 +144,7 @@ class TransformCest
                     'age'    => 42,
                     'my_job' => [
                         'name'       => 'Bartender',
-                        'start_date' => '2017-01-01 10:10:10',
+                        'start_date' => '2017-01-01T10:10:10+0000',
                     ],
                 ],
                 [
@@ -151,7 +152,7 @@ class TransformCest
                     'age'    => 42,
                     'my_job' => [
                         'name'       => 'Sailor',
-                        'start_date' => '2017-01-01 10:10:10',
+                        'start_date' => '2017-01-01T10:10:10+0000',
                     ],
                 ],
                 [
@@ -159,7 +160,7 @@ class TransformCest
                     'age'    => 42,
                     'my_job' => [
                         'name'       => 'Waitress',
-                        'start_date' => '2017-01-01 10:10:10',
+                        'start_date' => '2017-01-01T10:10:10+0000',
                     ],
                 ],
             ],
@@ -176,7 +177,7 @@ class TransformCest
             'pigLatin'   => 'Ymay amenay isyay Illbay',
             'occupation' => [
                 'name'      => 'Piano Man',
-                'startDate' => '2017-01-01 10:10:10',
+                'startDate' => '2017-01-01T10:10:10+0000',
             ],
             'friends'    => [],
         ];
@@ -202,7 +203,7 @@ class TransformCest
                     'pigLatin'   => 'Ymay amenay isyay Aulpay',
                     'occupation' => [
                         'name'      => 'Real estate novelist',
-                        'startDate' => '2017-01-01 10:10:10',
+                        'startDate' => '2017-01-01T10:10:10+0000',
                     ],
                     'friends'    => [],
                 ],
@@ -212,7 +213,7 @@ class TransformCest
                     'pigLatin'   => 'Ymay amenay isyay Ohnjay',
                     'occupation' => [
                         'name'      => 'Bartender',
-                        'startDate' => '2017-01-01 10:10:10',
+                        'startDate' => '2017-01-01T10:10:10+0000',
                     ],
                     'friends'    => [],
                 ],
@@ -222,7 +223,7 @@ class TransformCest
                     'pigLatin'   => 'Ymay amenay isyay Avyday',
                     'occupation' => [
                         'name'      => 'Sailor',
-                        'startDate' => '2017-01-01 10:10:10',
+                        'startDate' => '2017-01-01T10:10:10+0000',
                     ],
                     'friends'    => [],
                 ],
@@ -232,7 +233,7 @@ class TransformCest
                     'pigLatin'   => 'Ymay amenay isyay Elizabethyay',
                     'occupation' => [
                         'name'      => 'Waitress',
-                        'startDate' => '2017-01-01 10:10:10',
+                        'startDate' => '2017-01-01T10:10:10+0000',
                     ],
                     'friends'    => [],
                 ],
@@ -258,7 +259,7 @@ class TransformCest
                 'pigLatin'   => 'Ymay amenay isyay Aulpay',
                 'occupation' => [
                     'name'      => 'Real estate novelist',
-                    'startDate' => '2017-01-01 10:10:10',
+                    'startDate' => '2017-01-01T10:10:10+0000',
                 ],
                 'friends'    => [],
             ],
@@ -268,7 +269,7 @@ class TransformCest
                 'pigLatin'   => 'Ymay amenay isyay Ohnjay',
                 'occupation' => [
                     'name'      => 'Bartender',
-                    'startDate' => '2017-01-01 10:10:10',
+                    'startDate' => '2017-01-01T10:10:10+0000',
                 ],
                 'friends'    => [],
             ],
@@ -278,7 +279,7 @@ class TransformCest
                 'pigLatin'   => 'Ymay amenay isyay Avyday',
                 'occupation' => [
                     'name'      => 'Sailor',
-                    'startDate' => '2017-01-01 10:10:10',
+                    'startDate' => '2017-01-01T10:10:10+0000',
                 ],
                 'friends'    => [],
             ],
@@ -288,7 +289,7 @@ class TransformCest
                 'pigLatin'   => 'Ymay amenay isyay Elizabethyay',
                 'occupation' => [
                     'name'      => 'Waitress',
-                    'startDate' => '2017-01-01 10:10:10',
+                    'startDate' => '2017-01-01T10:10:10+0000',
                 ],
                 'friends'    => [],
             ],
@@ -315,28 +316,28 @@ class TransformCest
                     'name'       => 'My name is Paul',
                     'occupation' => [
                         'name'      => 'Real estate novelist',
-                        'startDate' => '2017-01-01 10:10:10',
+                        'startDate' => '2017-01-01T10:10:10+0000',
                     ],
                 ],
                 [
                     'name'       => 'My name is John',
                     'occupation' => [
                         'name'      => 'Bartender',
-                        'startDate' => '2017-01-01 10:10:10',
+                        'startDate' => '2017-01-01T10:10:10+0000',
                     ],
                 ],
                 [
                     'name'       => 'My name is Davy',
                     'occupation' => [
                         'name'      => 'Sailor',
-                        'startDate' => '2017-01-01 10:10:10',
+                        'startDate' => '2017-01-01T10:10:10+0000',
                     ],
                 ],
                 [
                     'name'       => 'My name is Elizabeth',
                     'occupation' => [
                         'name'      => 'Waitress',
-                        'startDate' => '2017-01-01 10:10:10',
+                        'startDate' => '2017-01-01T10:10:10+0000',
                     ],
                 ],
             ],

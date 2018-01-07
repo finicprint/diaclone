@@ -10,7 +10,7 @@ class DateTimeIso8601TransformerCest
     public function testTransform(UnitTester $I)
     {
         $transformer = new DateTimeIso8601Transformer();
-        $resource = new Item(new DateTime('2016-09-21 08:53:00'));
+        $resource = new Item(new DateTime('2016-09-21 08:53:00', new DateTimeZone("UTC")));
 
         $isoDateTime = $transformer->transform($resource);
 
@@ -23,7 +23,7 @@ class DateTimeIso8601TransformerCest
         $resource = new Item('2016-10-21T20:16:46.000Z');
         $dateTime = $transformer->untransform($resource);
 
-        $I->assertEquals(new Carbon('2016-10-21 20:16:46'), $dateTime);
+        $I->assertEquals(new Carbon('2016-10-21 20:16:46', new DateTimeZone("UTC")), $dateTime);
     }
 
     public function testIOSUntransform(UnitTester $I)
@@ -32,7 +32,7 @@ class DateTimeIso8601TransformerCest
         $resource = new Item('2016-01-12T17:00:00Z');
         $dateTime = $transformer->untransform($resource);
 
-        $I->assertEquals(new Carbon('2016-01-12 17:00:00'), $dateTime);
+        $I->assertEquals(new Carbon('2016-01-12 17:00:00',  new DateTimeZone("UTC")), $dateTime);
     }
 
     public function testEmptyStringTransform(UnitTester $I)
