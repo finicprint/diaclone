@@ -11,9 +11,11 @@
     },
     "require-dev": {
         "codeception/codeception": "^2.2",
+        "marc-mabe/php-enum": "^3.0",
         "ramsey/uuid": "^3.0@dev"
     },
     "suggest": {
+        "marc-mabe/php-enum": "For enum classes",
         "ramsey/uuid": "For UUID transformation"
     },
     "autoload": {
