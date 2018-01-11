@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit;
 
+use Test\Unit\Support\Pagination\PaginatorMock;
 use Test\Unit\Support\Transformers\PersonArrayTransformer;
 use UnitTester;
 use Diaclone\Resource\Collection;
@@ -246,6 +247,76 @@ class TransformToJsonCest
                         'startDate' => '2017-01-01T10:10:10+0000',
                     ],
                     'friends'    => [],
+                ],
+            ],
+        ];
+
+        $I->assertEquals($expected, json_decode($output, true));
+    }
+
+    public function testTransformationCollectionWithPaginator(UnitTester $I)
+    {
+        $friends = [
+            new Person('Paul', 'Real estate novelist'),
+            new Person('John', 'Bartender'),
+            new Person('Davy', 'Sailor'),
+            new Person('Elizabeth', 'Waitress'),
+        ];
+
+        $paginator = new PaginatorMock();
+
+        $output = (new TransformService(new SimpleJsonSerializer()))->transform($friends, new PersonTransformer(),
+            'people', '*', Collection::class, $paginator);
+
+        $expected = [
+            'people' => [
+                [
+                    'name'       => 'My name is Paul',
+                    'age'        => 42,
+                    'pigLatin'   => 'Ymay amenay isyay Aulpay',
+                    'occupation' => [
+                        'name'      => 'Real estate novelist',
+                        'startDate' => '2017-01-01T10:10:10+0000',
+                    ],
+                    'friends'    => [],
+                ],
+                [
+                    'name'       => 'My name is John',
+                    'age'        => 42,
+                    'pigLatin'   => 'Ymay amenay isyay Ohnjay',
+                    'occupation' => [
+                        'name'      => 'Bartender',
+                        'startDate' => '2017-01-01T10:10:10+0000',
+                    ],
+                    'friends'    => [],
+                ],
+                [
+                    'name'       => 'My name is Davy',
+                    'age'        => 42,
+                    'pigLatin'   => 'Ymay amenay isyay Avyday',
+                    'occupation' => [
+                        'name'      => 'Sailor',
+                        'startDate' => '2017-01-01T10:10:10+0000',
+                    ],
+                    'friends'    => [],
+                ],
+                [
+                    'name'       => 'My name is Elizabeth',
+                    'age'        => 42,
+                    'pigLatin'   => 'Ymay amenay isyay Elizabethyay',
+                    'occupation' => [
+                        'name'      => 'Waitress',
+                        'startDate' => '2017-01-01T10:10:10+0000',
+                    ],
+                    'friends'    => [],
+                ],
+            ],
+            '_metadata' => [
+                'pagination' => [
+                    'pageNumber' => 1,
+                    'perPage'    => 15,
+                    'pageCount'  => 10,
+                    'totalCount' => 150,
                 ],
             ],
         ];

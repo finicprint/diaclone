@@ -16,7 +16,7 @@ abstract class SerializerAbstract
      *
      * @return array
      */
-    abstract public function collection($resourceKey, $data);
+    abstract public function collection($resourceKey, $data, array $metadata = []);
 
     /**
      * Serialize an item.

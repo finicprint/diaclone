@@ -8,7 +8,7 @@ use Diaclone\Pagination\PaginatorInterface;
 
 class ArraySerializer extends SerializerAbstract
 {
-    public function collection($resourceKey, $data)
+    public function collection($resourceKey, $data, array $metadata = [])
     {
         return empty($resourceKey) ? $data : [$resourceKey => $data];
     }
