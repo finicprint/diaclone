@@ -3,30 +3,18 @@ declare(strict_types=1);
 
 namespace Diaclone\Transformer;
 
+use Diaclone\Exception\TransformException;
 use Diaclone\Resource\ResourceInterface;
+use MabeEnum\Enum;
 
 abstract class AbstractEnumTransformer extends AbstractTransformer
 {
-    public function getPropertyValue($data, $property)
-    {
-        if (empty($property)) {
-            return $data->getValue();
-        }
-
-        // convert property to camelCase
-        $getter = 'get' . str_replace(' ', '', ucwords(str_replace(['-', '_'], ' ', $property)));
-        if (method_exists($data, $getter)) {
-            $enum = $data->$getter();
-
-            return $enum->getValue();
-        }
-
-        return $data->$property->getValue() ?? null;
-    }
-
     public function transform(ResourceInterface $resource)
     {
-        return $this->getPropertyValueFromResource($resource);
+        /** @var Enum $enum */
+        $enum = $this->getPropertyValueFromResource($resource);
+
+        return $enum->getValue();
     }
 
     public function untransform(ResourceInterface $resource)
@@ -34,9 +22,13 @@ abstract class AbstractEnumTransformer extends AbstractTransformer
         if (!$data = $resource->getData()) {
             return null;
         }
-        $propertyTransform = $this->getEnumClass();
+        /** @var Enum $enumClass */
+        $enumClass = $this->getEnumClass();
+        if (!$enumClass::has($data)) {
+            throw new TransformException(sprintf('"%s" is not a valid value in the enum %s', $data, $enumClass));
+        }
 
-        return $propertyTransform::byValue($data);
+        return $enumClass::byValue($data);
     }
 
     abstract public function getEnumClass(): string;

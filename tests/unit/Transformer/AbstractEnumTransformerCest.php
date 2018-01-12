@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace TestUnit\Transformer;
 
+use Diaclone\Exception\TransformException;
 use Diaclone\Resource\Item;
 use Diaclone\Resource\ObjectItem;
 use Test\Unit\Support\Entities\ColorType;
@@ -63,5 +64,20 @@ class AbstractEnumTransformerCest
             ->setFavoriteColor(ColorType::byValue(ColorType::BLUE));
 
         $I->assertEquals($expected, $profile);
+    }
+
+    public function testUntransformInvalidValue(UnitTester $I)
+    {
+        $I->expectException(
+            new TransformException('"orange" is not a valid value in the enum Test\Unit\Support\Entities\ColorType'),
+            function() {
+                $transformer = new ProfileTransformer();
+                $payload =  [
+                    'favoriteColor' => 'orange',
+                ];
+                $resource = new ObjectItem($payload);
+
+                $transformer->untransform($resource);
+        });
     }
 }
