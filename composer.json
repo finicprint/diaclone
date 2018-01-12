@@ -10,7 +10,11 @@
         "nesbot/carbon": "1.21.0"
     },
     "require-dev": {
-        "codeception/codeception": "^2.2"
+        "codeception/codeception": "^2.2",
+        "ramsey/uuid": "^3.0@dev"
+    },
+    "suggest": {
+        "ramsey/uuid": "For UUID transformation"
     },
     "autoload": {
         "psr-4": {
