@@ -8,32 +8,32 @@ use Diaclone\Pagination\PaginatorInterface;
 class PaginatorMock implements PaginatorInterface
 {
 
-    public function getCurrentPage()
+    public function getCurrentPage(): int
     {
         return 1;
     }
 
-    public function getLastPage()
+    public function getLastPage(): int
     {
         return 10;
     }
 
-    public function getTotal()
+    public function getTotal(): int
     {
         return 150;
     }
 
-    public function getCount()
+    public function getCount(): int
     {
         return 15;
     }
 
-    public function getPerPage()
+    public function getPerPage(): int
     {
         return 15;
     }
 
-    public function getUrl($page)
+    public function getUrl($page): string
     {
         return '';
     }

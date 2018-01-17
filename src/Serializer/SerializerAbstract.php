@@ -56,10 +56,10 @@ abstract class SerializerAbstract
     public function paginator(PaginatorInterface $paginator)
     {
         $pagination = [
-            'pageNumber' => (int)$paginator->getCurrentPage(),
-            'perPage'    => (int)$paginator->getPerPage(),
-            'pageCount'  => (int)$paginator->getLastPage(),
-            'totalCount' => (int)$paginator->getTotal(),
+            'pageNumber' => $paginator->getCurrentPage(),
+            'perPage'    => $paginator->getPerPage(),
+            'pageCount'  => $paginator->getLastPage(),
+            'totalCount' => $paginator->getTotal(),
         ];
 
         return ['pagination' => $pagination];
