@@ -47,18 +47,6 @@ class SimpleJsonSerializer extends SerializerAbstract
         return ['meta' => $meta];
     }
 
-    public function paginator(PaginatorInterface $paginator)
-    {
-        $pagination = [
-            'pageNumber' => (int)$paginator->getCurrentPage(),
-            'perPage'    => (int)$paginator->getPerPage(),
-            'pageCount'  => (int)$paginator->getLastPage(),
-            'totalCount' => (int)$paginator->getTotal(),
-        ];
-
-        return ['pagination' => $pagination];
-    }
-
     public function cursor(CursorInterface $cursor)
     {
         $formatted = [
