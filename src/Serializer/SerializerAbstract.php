@@ -16,7 +16,7 @@ abstract class SerializerAbstract
      *
      * @return array
      */
-    abstract public function collection($resourceKey, $data);
+    abstract public function collection($resourceKey, $data, array $metadata = []);
 
     /**
      * Serialize an item.
@@ -38,15 +38,6 @@ abstract class SerializerAbstract
     abstract public function meta(array $meta);
 
     /**
-     * Serialize the paginator.
-     *
-     * @param PaginatorInterface $paginator
-     *
-     * @return array
-     */
-    abstract public function paginator(PaginatorInterface $paginator);
-
-    /**
      * Serialize the cursor.
      *
      * @param CursorInterface $cursor
@@ -54,6 +45,25 @@ abstract class SerializerAbstract
      * @return array
      */
     abstract public function cursor(CursorInterface $cursor);
+
+    /**
+     * Serialize the paginator.
+     *
+     * @param PaginatorInterface $paginator
+     *
+     * @return array
+     */
+    public function paginator(PaginatorInterface $paginator)
+    {
+        $pagination = [
+            'pageNumber' => $paginator->getCurrentPage(),
+            'perPage'    => $paginator->getPerPage(),
+            'pageCount'  => $paginator->getLastPage(),
+            'totalCount' => $paginator->getTotal(),
+        ];
+
+        return ['pagination' => $pagination];
+    }
 
     public function mergeIncludes($transformedData, $includedData)
     {

@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Diaclone;
 
+use Diaclone\Pagination\PaginatorInterface;
 use Diaclone\Resource\Collection;
 use Diaclone\Resource\Item;
 use Diaclone\Serializer\ArraySerializer;
@@ -23,14 +24,19 @@ class TransformService
         $this->serializer = $serializer ?: new ArraySerializer();
     }
 
-    public function transform($data, AbstractTransformer $transformer, $key = '', $fieldMap = '*', $resourceClass = Item::class)
-    {
+    public function transform(
+        $data,
+        AbstractTransformer $transformer,
+        $key = '',
+        $fieldMap = '*',
+        $resourceClass = Item::class,
+        PaginatorInterface $paginator = null
+    ) {
         $resource = new $resourceClass($data, '', $fieldMap);
         $transformed = $transformer->transform($resource);
 
         if ($resource instanceof Collection) {
-            $serialized = $this->serializer->collection($key, $transformed);
-
+            $serialized = $this->serializer->collection($key, $transformed, $paginator ? $this->serializer->paginator($paginator) : []);
         } else {
             $serialized = $this->serializer->item($key, $transformed);
         }

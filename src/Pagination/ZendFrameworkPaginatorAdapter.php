@@ -53,7 +53,7 @@ class ZendFrameworkPaginatorAdapter implements PaginatorInterface
      *
      * @return int
      */
-    public function getCurrentPage()
+    public function getCurrentPage(): int
     {
         return $this->paginator->getCurrentPageNumber();
     }
@@ -63,7 +63,7 @@ class ZendFrameworkPaginatorAdapter implements PaginatorInterface
      *
      * @return int
      */
-    public function getLastPage()
+    public function getLastPage(): int
     {
         return $this->paginator->count();
     }
@@ -73,7 +73,7 @@ class ZendFrameworkPaginatorAdapter implements PaginatorInterface
      *
      * @return int
      */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->paginator->getTotalItemCount();
     }
@@ -83,7 +83,7 @@ class ZendFrameworkPaginatorAdapter implements PaginatorInterface
      *
      * @return int
      */
-    public function getCount()
+    public function getCount(): int
     {
         return $this->paginator->getCurrentItemCount();
     }
@@ -93,7 +93,7 @@ class ZendFrameworkPaginatorAdapter implements PaginatorInterface
      *
      * @return int
      */
-    public function getPerPage()
+    public function getPerPage(): int
     {
         return $this->paginator->getItemCountPerPage();
     }
@@ -105,7 +105,7 @@ class ZendFrameworkPaginatorAdapter implements PaginatorInterface
      *
      * @return string
      */
-    public function getUrl($page)
+    public function getUrl($page): string
     {
         return call_user_func($this->routeGenerator, $page);
     }

@@ -21,7 +21,7 @@ class DataArraySerializer extends ArraySerializer
      *
      * @return array
      */
-    public function collection($resourceKey, array $data)
+    public function collection($resourceKey, $data, array $metadata = [])
     {
         return ['data' => $data];
     }

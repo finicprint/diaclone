@@ -11,9 +11,18 @@ class SimpleJsonSerializer extends SerializerAbstract
 {
     protected $jsonEncodingOptions = JSON_PRETTY_PRINT;
 
-    public function collection($resourceKey, $data)
+    public function collection($resourceKey, $data, array $metadata = [])
     {
-        return json_encode(empty($resourceKey) ? (array)$data : [$resourceKey => $data], $this->jsonEncodingOptions);
+        if (empty($resourceKey)) {
+            $result = (array)$data;
+        } else {
+            $result = [$resourceKey => $data];
+            if (!empty($metadata)) {
+                $result['_metadata'] = $metadata;
+            }
+        }
+
+        return json_encode($result, $this->jsonEncodingOptions);
     }
 
     public function item($resourceKey, $data)
@@ -36,32 +45,6 @@ class SimpleJsonSerializer extends SerializerAbstract
         }
 
         return ['meta' => $meta];
-    }
-
-    public function paginator(PaginatorInterface $paginator)
-    {
-        $currentPage = (int)$paginator->getCurrentPage();
-        $lastPage = (int)$paginator->getLastPage();
-
-        $pagination = [
-            'total'        => (int)$paginator->getTotal(),
-            'count'        => (int)$paginator->getCount(),
-            'per_page'     => (int)$paginator->getPerPage(),
-            'current_page' => $currentPage,
-            'total_pages'  => $lastPage,
-        ];
-
-        $pagination['links'] = [];
-
-        if ($currentPage > 1) {
-            $pagination['links']['previous'] = $paginator->getUrl($currentPage - 1);
-        }
-
-        if ($currentPage < $lastPage) {
-            $pagination['links']['next'] = $paginator->getUrl($currentPage + 1);
-        }
-
-        return ['pagination' => $pagination];
     }
 
     public function cursor(CursorInterface $cursor)
