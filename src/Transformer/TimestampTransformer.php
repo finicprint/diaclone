@@ -5,6 +5,7 @@ namespace Diaclone\Transformer;
 
 use Carbon\Carbon;
 use DateTime;
+use DateTimeZone;
 use Diaclone\Resource\ResourceInterface;
 
 class TimestampTransformer extends AbstractTransformer
@@ -15,7 +16,7 @@ class TimestampTransformer extends AbstractTransformer
         $value = $this->getPropertyValueFromResource($resource);
 
         if (is_string($value)) {
-           $value = new DateTime($value);
+           $value = new DateTime($value, new DateTimeZone('UTC'));
         }
 
         return $value->getTimestamp();
