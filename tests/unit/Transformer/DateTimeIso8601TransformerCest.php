@@ -14,7 +14,7 @@ class DateTimeIso8601TransformerCest
 
         $isoDateTime = $transformer->transform($resource);
 
-        $I->assertSame('2016-09-21T08:53:00+0000', $isoDateTime);
+        $I->assertSame('2016-09-21T08:53:00+00:00', $isoDateTime);
     }
 
     public function testJavascriptUntransform(UnitTester $I)

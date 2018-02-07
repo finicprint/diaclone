@@ -20,10 +20,7 @@ class DateTimeIso8601Transformer extends AbstractTransformer
 
         try {
             if ($carbon = self::parseCarbon($value)) {
-                // replace '+##:##' with '+####'
-                return preg_replace_callback('/\+[0-9]{2}:[0-9]{2}/', function($matches) {
-                    return str_replace(':', '', $matches[0]);
-                }, $carbon->toIso8601String());
+                return $carbon->toIso8601String();
             }
 
             return '';

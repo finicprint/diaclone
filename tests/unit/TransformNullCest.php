@@ -43,7 +43,7 @@ class TransformNullCest
             'pigLatin'   => 'Ymay amenay isyay Illbay',
             'occupation' => [
                 'name'      => 'Piano Man',
-                'startDate' => '2017-01-01T10:10:10+0000',
+                'startDate' => '2017-01-01T10:10:10+00:00',
             ],
             'friends'    => [
                 [
@@ -52,7 +52,7 @@ class TransformNullCest
                     'pigLatin'   => 'Ymay amenay isyay Aulpay',
                     'occupation' => [
                         'name'      => 'Real estate novelist',
-                        'startDate' => '2017-01-01T10:10:10+0000',
+                        'startDate' => '2017-01-01T10:10:10+00:00',
                     ],
                     'friends'    => [],
                 ],
@@ -62,7 +62,7 @@ class TransformNullCest
                     'pigLatin'   => 'Ymay amenay isyay Ohnjay',
                     'occupation' => [
                         'name'      => 'Bartender',
-                        'startDate' => '2017-01-01T10:10:10+0000',
+                        'startDate' => '2017-01-01T10:10:10+00:00',
                     ],
                     'friends'    => [],
                 ],

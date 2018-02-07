@@ -30,7 +30,7 @@ class TransformCest
                 'pigLatin'   => 'Ymay amenay isyay Illbay',
                 'occupation' => [
                     'name'      => 'Piano Man',
-                    'startDate' => '2017-01-01T10:10:10+0000',
+                    'startDate' => '2017-01-01T10:10:10+00:00',
                 ],
                 'friends'    => [
                     [
@@ -39,7 +39,7 @@ class TransformCest
                         'pigLatin'   => 'Ymay amenay isyay Aulpay',
                         'occupation' => [
                             'name'      => 'Real estate novelist',
-                            'startDate' => '2017-01-01T10:10:10+0000',
+                            'startDate' => '2017-01-01T10:10:10+00:00',
                         ],
                         'friends'    => [],
                     ],
@@ -49,7 +49,7 @@ class TransformCest
                         'pigLatin'   => 'Ymay amenay isyay Ohnjay',
                         'occupation' => [
                             'name'      => 'Bartender',
-                            'startDate' => '2017-01-01T10:10:10+0000',
+                            'startDate' => '2017-01-01T10:10:10+00:00',
                         ],
                         'friends'    => [],
                     ],
@@ -59,7 +59,7 @@ class TransformCest
                         'pigLatin'   => 'Ymay amenay isyay Avyday',
                         'occupation' => [
                             'name'      => 'Sailor',
-                            'startDate' => '2017-01-01T10:10:10+0000',
+                            'startDate' => '2017-01-01T10:10:10+00:00',
                         ],
                         'friends'    => [],
                     ],
@@ -69,7 +69,7 @@ class TransformCest
                         'pigLatin'   => 'Ymay amenay isyay Elizabethyay',
                         'occupation' => [
                             'name'      => 'Waitress',
-                            'startDate' => '2017-01-01T10:10:10+0000',
+                            'startDate' => '2017-01-01T10:10:10+00:00',
                         ],
                         'friends'    => [],
                     ],
@@ -93,7 +93,7 @@ class TransformCest
                     'age'        => 42,
                     'occupation' => [
                         'name'      => 'Real estate novelist',
-                        'startDate' => '2017-01-01T10:10:10+0000',
+                        'startDate' => '2017-01-01T10:10:10+00:00',
                     ],
                 ],
                 [
@@ -101,7 +101,7 @@ class TransformCest
                     'age'        => 42,
                     'occupation' => [
                         'name'      => 'Bartender',
-                        'startDate' => '2017-01-01T10:10:10+0000',
+                        'startDate' => '2017-01-01T10:10:10+00:00',
                     ],
                 ],
                 [
@@ -109,7 +109,7 @@ class TransformCest
                     'age'        => 42,
                     'occupation' => [
                         'name'      => 'Sailor',
-                        'startDate' => '2017-01-01T10:10:10+0000',
+                        'startDate' => '2017-01-01T10:10:10+00:00',
                     ],
                 ],
                 [
@@ -117,7 +117,7 @@ class TransformCest
                     'age'        => 42,
                     'occupation' => [
                         'name'      => 'Waitress',
-                        'startDate' => '2017-01-01T10:10:10+0000',
+                        'startDate' => '2017-01-01T10:10:10+00:00',
                     ],
                 ],
             ],
@@ -136,7 +136,7 @@ class TransformCest
                     'age'    => 42,
                     'my_job' => [
                         'name'       => 'Real estate novelist',
-                        'start_date' => '2017-01-01T10:10:10+0000',
+                        'start_date' => '2017-01-01T10:10:10+00:00',
                     ],
                 ],
                 [
@@ -144,7 +144,7 @@ class TransformCest
                     'age'    => 42,
                     'my_job' => [
                         'name'       => 'Bartender',
-                        'start_date' => '2017-01-01T10:10:10+0000',
+                        'start_date' => '2017-01-01T10:10:10+00:00',
                     ],
                 ],
                 [
@@ -152,7 +152,7 @@ class TransformCest
                     'age'    => 42,
                     'my_job' => [
                         'name'       => 'Sailor',
-                        'start_date' => '2017-01-01T10:10:10+0000',
+                        'start_date' => '2017-01-01T10:10:10+00:00',
                     ],
                 ],
                 [
@@ -160,7 +160,7 @@ class TransformCest
                     'age'    => 42,
                     'my_job' => [
                         'name'       => 'Waitress',
-                        'start_date' => '2017-01-01T10:10:10+0000',
+                        'start_date' => '2017-01-01T10:10:10+00:00',
                     ],
                 ],
             ],
@@ -177,7 +177,7 @@ class TransformCest
             'pigLatin'   => 'Ymay amenay isyay Illbay',
             'occupation' => [
                 'name'      => 'Piano Man',
-                'startDate' => '2017-01-01T10:10:10+0000',
+                'startDate' => '2017-01-01T10:10:10+00:00',
             ],
             'friends'    => [],
         ];
@@ -203,7 +203,7 @@ class TransformCest
                     'pigLatin'   => 'Ymay amenay isyay Aulpay',
                     'occupation' => [
                         'name'      => 'Real estate novelist',
-                        'startDate' => '2017-01-01T10:10:10+0000',
+                        'startDate' => '2017-01-01T10:10:10+00:00',
                     ],
                     'friends'    => [],
                 ],
@@ -213,7 +213,7 @@ class TransformCest
                     'pigLatin'   => 'Ymay amenay isyay Ohnjay',
                     'occupation' => [
                         'name'      => 'Bartender',
-                        'startDate' => '2017-01-01T10:10:10+0000',
+                        'startDate' => '2017-01-01T10:10:10+00:00',
                     ],
                     'friends'    => [],
                 ],
@@ -223,7 +223,7 @@ class TransformCest
                     'pigLatin'   => 'Ymay amenay isyay Avyday',
                     'occupation' => [
                         'name'      => 'Sailor',
-                        'startDate' => '2017-01-01T10:10:10+0000',
+                        'startDate' => '2017-01-01T10:10:10+00:00',
                     ],
                     'friends'    => [],
                 ],
@@ -233,7 +233,7 @@ class TransformCest
                     'pigLatin'   => 'Ymay amenay isyay Elizabethyay',
                     'occupation' => [
                         'name'      => 'Waitress',
-                        'startDate' => '2017-01-01T10:10:10+0000',
+                        'startDate' => '2017-01-01T10:10:10+00:00',
                     ],
                     'friends'    => [],
                 ],
@@ -259,7 +259,7 @@ class TransformCest
                 'pigLatin'   => 'Ymay amenay isyay Aulpay',
                 'occupation' => [
                     'name'      => 'Real estate novelist',
-                    'startDate' => '2017-01-01T10:10:10+0000',
+                    'startDate' => '2017-01-01T10:10:10+00:00',
                 ],
                 'friends'    => [],
             ],
@@ -269,7 +269,7 @@ class TransformCest
                 'pigLatin'   => 'Ymay amenay isyay Ohnjay',
                 'occupation' => [
                     'name'      => 'Bartender',
-                    'startDate' => '2017-01-01T10:10:10+0000',
+                    'startDate' => '2017-01-01T10:10:10+00:00',
                 ],
                 'friends'    => [],
             ],
@@ -279,7 +279,7 @@ class TransformCest
                 'pigLatin'   => 'Ymay amenay isyay Avyday',
                 'occupation' => [
                     'name'      => 'Sailor',
-                    'startDate' => '2017-01-01T10:10:10+0000',
+                    'startDate' => '2017-01-01T10:10:10+00:00',
                 ],
                 'friends'    => [],
             ],
@@ -289,7 +289,7 @@ class TransformCest
                 'pigLatin'   => 'Ymay amenay isyay Elizabethyay',
                 'occupation' => [
                     'name'      => 'Waitress',
-                    'startDate' => '2017-01-01T10:10:10+0000',
+                    'startDate' => '2017-01-01T10:10:10+00:00',
                 ],
                 'friends'    => [],
             ],
@@ -316,28 +316,28 @@ class TransformCest
                     'name'       => 'My name is Paul',
                     'occupation' => [
                         'name'      => 'Real estate novelist',
-                        'startDate' => '2017-01-01T10:10:10+0000',
+                        'startDate' => '2017-01-01T10:10:10+00:00',
                     ],
                 ],
                 [
                     'name'       => 'My name is John',
                     'occupation' => [
                         'name'      => 'Bartender',
-                        'startDate' => '2017-01-01T10:10:10+0000',
+                        'startDate' => '2017-01-01T10:10:10+00:00',
                     ],
                 ],
                 [
                     'name'       => 'My name is Davy',
                     'occupation' => [
                         'name'      => 'Sailor',
-                        'startDate' => '2017-01-01T10:10:10+0000',
+                        'startDate' => '2017-01-01T10:10:10+00:00',
                     ],
                 ],
                 [
                     'name'       => 'My name is Elizabeth',
                     'occupation' => [
                         'name'      => 'Waitress',
-                        'startDate' => '2017-01-01T10:10:10+0000',
+                        'startDate' => '2017-01-01T10:10:10+00:00',
                     ],
                 ],
             ],
