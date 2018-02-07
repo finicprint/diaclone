@@ -10,19 +10,8 @@ class UnrecognizedInputException extends AbstractTransformerException
         return $this->getInvalidFields();
     }
 
-    public function setUnrecognizedFields($unrecognizedFields): UnrecognizedInputException
-    {
-        $this->setInvalidFields($unrecognizedFields);
-
-        return $this;
-    }
-
     protected function generateMessage(): string
     {
-        if (is_string($this->getInvalidFields())) {
-            return "'{$this->getFieldsForMessage()}' is not defined{$this->getTransformerForMessage()}";
-        }
-
         return "Unrecognized input fields: {$this->getFieldsForMessage()}{$this->getTransformerForMessage()}";
     }
 }

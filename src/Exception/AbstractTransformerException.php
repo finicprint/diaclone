@@ -7,15 +7,14 @@ use Diaclone\Transformer\AbstractTransformer;
 
 abstract class AbstractTransformerException extends TransformException
 {
-    private $invalidFields;
+    private $invalidFields = [];
     /** @var AbstractTransformer */
     protected $transformer;
 
-    public function __construct($fields, AbstractTransformer $transformer = null, string $message = null)
+    public function __construct(array $fields, AbstractTransformer $transformer = null, string $message = null)
     {
-        $this
-            ->setInvalidFields($fields)
-            ->setTransformer($transformer);
+        $this->setInvalidFields($fields);
+        $this->transformer = $transformer;
 
         $message = $message ?? $this->generateMessage();
 
@@ -27,13 +26,6 @@ abstract class AbstractTransformerException extends TransformException
         return $this->transformer;
     }
 
-    public function setTransformer($transformer): self
-    {
-        $this->transformer = $transformer;
-
-        return $this;
-    }
-
     abstract protected function generateMessage(): string;
 
     protected function getInvalidFields(): array
@@ -41,7 +33,7 @@ abstract class AbstractTransformerException extends TransformException
         return $this->invalidFields;
     }
 
-    protected function setInvalidFields($fields): self
+    protected function setInvalidFields(array $fields): self
     {
         $this->invalidFields = $fields;
 
@@ -50,7 +42,7 @@ abstract class AbstractTransformerException extends TransformException
 
     protected function getFieldsForMessage(): string
     {
-        return is_string($this->invalidFields) ? $this->invalidFields : implode(', ', $this->invalidFields);
+        return implode(', ', $this->invalidFields);
 
     }
 
