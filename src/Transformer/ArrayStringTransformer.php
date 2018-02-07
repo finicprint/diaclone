@@ -38,7 +38,7 @@ class ArrayStringTransformer extends AbstractTransformer
             }
 
         } catch (Exception $exception) {
-            throw new MalformedInputException([$value, 'String expected']);
+            throw new MalformedInputException([$value, 'String expected'], $this);
         }
 
         return $data;

@@ -42,7 +42,7 @@ class ObjectItem extends Item
             if ($propertyTransformer->allowUntransform($dataType)) {
                 try {
                     $this->setPropertyValue($response, $property, $propertyTransformer->untransform($dataType));
-                } catch (UnrecognizedInputException $e) {
+                } catch (TransformException $e) {
                     throw $e;
                 } catch (Exception $e) {
                     $malformedFields[] = $incomingProperty;
@@ -55,7 +55,7 @@ class ObjectItem extends Item
         }
 
         if (! empty($malformedFields)) {
-            throw new MalformedInputException($malformedFields);
+            throw new MalformedInputException($malformedFields, $transformer);
         }
 
         return $response;
