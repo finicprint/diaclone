@@ -44,6 +44,8 @@ class ObjectItem extends Item
                     $this->setPropertyValue($response, $property, $propertyTransformer->untransform($dataType));
                 } catch (UnrecognizedInputException $e) {
                     throw $e;
+                } catch (TransformException $e) {
+                    throw $e;
                 } catch (Exception $e) {
                     $malformedFields[] = $incomingProperty;
                 }
