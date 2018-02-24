@@ -1,13 +1,13 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Diaclone\Transformer;
 
-use DateTime;
-use Exception;
 use Carbon\Carbon;
+use DateTime;
 use Diaclone\Exception\TransformException;
 use Diaclone\Resource\ResourceInterface;
+use Exception;
 
 class DateTimeIso8601Transformer extends AbstractTransformer
 {
@@ -53,7 +53,13 @@ class DateTimeIso8601Transformer extends AbstractTransformer
         }
 
         try {
+
+            if (is_numeric($value)) {
+                return Carbon::createFromTimestamp((int)$value);
+            }
+
             return new Carbon($value);
+
         } catch (Exception $e) {
             return $value;
         }
