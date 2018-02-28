@@ -8,7 +8,7 @@ class Profile
     /** @var ColorType */
     protected $favoriteColor;
 
-    public function getFavoriteColor(): ColorType
+    public function getFavoriteColor(): ?ColorType
     {
         return $this->favoriteColor;
     }

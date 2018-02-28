@@ -50,6 +50,21 @@ class AbstractEnumTransformerCest
         $I->assertSame($expected, $data);
     }
 
+    public function testTransformNullInObject(UnitTester $I)
+    {
+        $transformer = new ProfileTransformer();
+        $profile = (new Profile());
+        $resource = new ObjectItem($profile);
+
+        $data = $transformer->transform($resource);
+
+        $expected = [
+            'favoriteColor' => null,
+        ];
+
+        $I->assertSame($expected, $data);
+    }
+
     public function testUntransformInObject(UnitTester $I)
     {
         $transformer = new ProfileTransformer();

@@ -14,7 +14,7 @@ abstract class AbstractEnumTransformer extends AbstractTransformer
         /** @var Enum $enum */
         $enum = $this->getPropertyValueFromResource($resource);
 
-        return $enum->getValue();
+        return $enum ? $enum->getValue() : null;
     }
 
     public function untransform(ResourceInterface $resource)
