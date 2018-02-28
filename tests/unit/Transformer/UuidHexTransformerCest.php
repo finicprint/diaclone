@@ -17,4 +17,12 @@ class UuidHexTransformerCest
         $uuid = $transformer->transform($resource);
         $I->assertSame('9b76ac3e5211454e94043a638cf9a2d9', $uuid);
     }
+
+    public function testTransformNullValue(UnitTester $I)
+    {
+        $transformer = new UuidHexTransformer();
+        $resource = new Item(null);
+        $uuid = $transformer->transform($resource);
+        $I->assertNull($uuid);
+    }
 }

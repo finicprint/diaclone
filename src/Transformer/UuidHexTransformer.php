@@ -13,6 +13,6 @@ class UuidHexTransformer extends UuidTransformer
         /** @var Uuid $value */
         $uuid = $this->getPropertyValueFromResource($resource);
 
-        return $uuid->getHex();
+        return $uuid ? $uuid->getHex() : null;
     }
 }
