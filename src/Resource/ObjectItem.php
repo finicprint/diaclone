@@ -32,7 +32,7 @@ class ObjectItem extends Item
             }
             $property = $mapping[$incomingProperty];
 
-            $propertyTransformerClass = $transformer->getPropertyTransformer($property);
+            $propertyTransformerClass = $transformer->getPropertyTransformers($property);
             /** @var AbstractTransformer $propertyTransformer */
             $propertyTransformer = new $propertyTransformerClass();
 

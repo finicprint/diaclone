@@ -3,7 +3,9 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Support\Entities;
 
-class Person
+use JsonSerializable;
+
+class Person implements JsonSerializable
 {
     public $my_job;
 
@@ -54,4 +56,23 @@ class Person
     {
         $this->friends = $friends;
     }
+
+    public function toArray()
+    {
+        return [
+            'age'     => $this->age,
+            'name'    => $this->name,
+            'my_job'  => $this->my_job->getName(),
+            'friends' => array_map(function($friend) {
+                return is_array($friend) ? $friend : $friend->toArray();
+            }, $this->friends),
+        ];
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->toArray();
+    }
+
+
 }

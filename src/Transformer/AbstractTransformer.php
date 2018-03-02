@@ -62,7 +62,7 @@ abstract class AbstractTransformer
         return static::$mappedProperties;
     }
 
-    public function getPropertyTransformer(string $property): string
+    public function getPropertyTransformers(string $property)
     {
         return static::$transformers[$property] ?? StringTransformer::class;
     }
