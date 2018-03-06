@@ -7,11 +7,13 @@ use Diaclone\Exception\MalformedInputException;
 use Diaclone\Exception\TransformException;
 use Diaclone\Resource\ResourceInterface;
 use Diaclone\Traits\EmojiTrait;
+use Diaclone\Traits\NonPrintableCharacterTrimmerTrait;
 use Exception;
 
 class StringTransformer extends AbstractTransformer
 {
     use EmojiTrait;
+    use NonPrintableCharacterTrimmerTrait;
 
     public function transform(ResourceInterface $resource)
     {
@@ -19,6 +21,7 @@ class StringTransformer extends AbstractTransformer
 
         try {
             $value = $this->convertToEmojis($value);
+            $value = $this->trimNonPrintableCharacters($value);
 
             return htmlentities($value);
 
