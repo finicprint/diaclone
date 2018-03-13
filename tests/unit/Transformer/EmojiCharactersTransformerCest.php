@@ -2,13 +2,13 @@
 declare(strict_types = 1);
 
 use Diaclone\Resource\Item;
-use Diaclone\Transformer\EmojiStringTransformer;
+use Diaclone\Transformer\EmojiCharactersTransformer;
 
-class EmojiStringTransformerCest
+class EmojiCharactersTransformerCest
 {
-    public function testTransformEmoji(UnitTester $I)
+    public function testTransform(UnitTester $I)
     {
-        $transformer = new EmojiStringTransformer();
+        $transformer = new EmojiCharactersTransformer();
         $data = 'String with emoji :emoji-1f602:';
         $resource = new Item($data);
 
@@ -17,9 +17,9 @@ class EmojiStringTransformerCest
         $I->assertEquals('String with emoji ' . "\xF0\x9F\x98\x82", $transformed);
     }
 
-    public function testUntransformEmoji(UnitTester $I)
+    public function testUntransform(UnitTester $I)
     {
-        $transformer = new EmojiStringTransformer();
+        $transformer = new EmojiCharactersTransformer();
         $data = 'String with emoji ' . "\xF0\x9F\x98\x82";
         $resource = new Item($data);
 
