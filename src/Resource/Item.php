@@ -31,7 +31,7 @@ class Item extends AbstractResource
 
         // validate fields list
         if ($diff = array_diff($fieldMap, array_keys($mappedProperties))) {
-            throw new UnrecognizedInputException($diff);
+            throw new UnrecognizedInputException($diff, $transformer);
         }
 
         foreach ($fieldMap as $property) {
@@ -122,7 +122,7 @@ class Item extends AbstractResource
         }
 
         if (! empty($malformedFields)) {
-            throw new MalformedInputException($malformedFields);
+            throw new MalformedInputException($malformedFields, $transformer);
         }
 
         return $response;
