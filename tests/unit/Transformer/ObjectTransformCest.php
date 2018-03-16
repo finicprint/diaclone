@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace Test\Unit;
+namespace Test\Unit\Transformer;
 
 use Diaclone\Resource\ObjectCollection;
 use Diaclone\Resource\ObjectItem;

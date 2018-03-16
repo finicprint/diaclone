@@ -9,13 +9,13 @@ abstract class AbstractObjectTransformer extends AbstractTransformer
 {
     abstract public function getObjectClass(): string;
 
-    public function toObject(ResourceInterface $resource)
-    {
-        return $resource->untransform($this);
-    }
-
     public function toArray(ResourceInterface $resource)
     {
-        return $resource->transform($this);
+        return $this->transform($resource);
+    }
+
+    public function toObject(ResourceInterface $resource)
+    {
+        return $this->untransform($resource);
     }
 }
