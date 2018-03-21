@@ -15,7 +15,7 @@ final class Password
 
     private function __construct(string $password)
     {
-        $this->password = password_hash($password, PASSWORD_ARGON2I);
+        $this->password = password_hash($password, PASSWORD_BCRYPT);
     }
 
     public function toString(): string

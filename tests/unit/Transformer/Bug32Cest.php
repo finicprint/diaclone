@@ -18,7 +18,7 @@ class Bug32Cest
 
         $hash = (new PayloadToPasswordTransformer())->toArray($resources);
 
-        $I->assertStringStartsWith('$argon2i', $hash);
+        $I->assertStringStartsWith('$2y$', $hash);
     }
 
     public function testToObject(UnitTester $I)
