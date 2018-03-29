@@ -14,7 +14,7 @@ class NonPrintableCharactersTransformerCest
 
         $transformed = $transformer->transform($resource);
 
-        $I->assertEquals('String with non-printable characters', $transformed);
+        $I->assertEquals("String with non-printable characters\t\n\r", $transformed);
     }
 
     private function getNonPrintableCharacters(): string
