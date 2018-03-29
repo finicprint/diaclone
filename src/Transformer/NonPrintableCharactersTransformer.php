@@ -14,7 +14,7 @@ class NonPrintableCharactersTransformer extends AbstractTransformer
     {
         $value = (string)$this->getPropertyValueFromResource($resource);
 
-        return preg_replace('/[\x00-\x1F\x7F\xA0]/u', '', $value);
+        return preg_replace('/[\x00-\x08\x0E-\x1F\x0B\x0C\x7F\xA0]/u', '', $value);
     }
 
     public function untransform(ResourceInterface $resource)
